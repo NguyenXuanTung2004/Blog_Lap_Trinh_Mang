@@ -1,5 +1,4 @@
-baseURL = "https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang" # Sẽ sửa lại sau
-languageCode = "vi-vn"
+baseURL = "https://NguyenXuanTung2004.github.io/Blog_Lap_Trinh_Mang/"languageCode = "vi-vn"
 title = "Blog của Tùng"
 theme = "PaperMod" # Kích hoạt theme PaperMod
 
