@@ -1,0 +1,41 @@
+baseURL = "https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang" # Sẽ sửa lại sau
+languageCode = "vi-vn"
+title = "Blog của Tùng"
+theme = "PaperMod" # Kích hoạt theme PaperMod
+
+[params]
+# Cấu hình cho trang chủ
+[params.homeInfoParams]
+Title = "Chào mừng đến Blog của Tùng"
+Content = "Đây là nơi mà Tùng sẽ chia sẻ về lập trình Java và JavaScript."
+
+# Cấu hình menu (theo yêu cầu: Home & Blog)
+[[menu.main]]
+identifier = "blog"
+name = "Blog"
+url = "/posts/" # "Blog" sẽ trỏ đến thư mục /posts/
+weight = 10
+
+[[menu.main]]
+identifier = "profile"
+name = "Profile"
+url = "/profile/" # "Profile" sẽ trỏ đến trang /profile/
+weight = 20
+
+# Cấu hình profile cá nhân ở sidebar (thay thế bằng thông tin của bạn)
+[params.profileMode]
+enabled = true
+title = "Nguyễn Xuân Tùng"
+subtitle = "Sinh viên... | Đam mê lập trình..."
+# imageUrl = "/link-den-anh-the-cua-ban.jpg" # (Tùy chọn)
+# imageWidth = 120
+# imageHeight = 120
+
+# Thêm các nút liên kết (ví dụ)
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/NguyenXuanTung2004"
+
+[[params.socialIcons]]
+name = "facebook"
+url = "https://www.facebook.com/nguyen.xuan.tung.498801"

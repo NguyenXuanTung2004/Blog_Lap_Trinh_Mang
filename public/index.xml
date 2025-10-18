@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blog của Tùng</title>
+    <link>https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/</link>
+    <description>Recent content on Blog của Tùng</description>
+    <generator>Hugo -- 0.151.0</generator>
+    <language>vi-vn</language>
+    <lastBuildDate>Sun, 19 Oct 2025 00:30:00 +0700</lastBuildDate>
+    <atom:link href="https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bài viết Java số 1: Giới thiệu về Java</title>
+      <link>https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-1/</link>
+      <pubDate>Sun, 19 Oct 2025 00:30:00 +0700</pubDate>
+      <guid>https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-1/</guid>
+      <description>&lt;h2 id=&#34;java-là-gì&#34;&gt;Java là gì?&lt;/h2&gt;
+&lt;p&gt;Java là một ngôn ngữ lập trình&amp;hellip; bla bla&amp;hellip;&lt;/p&gt;
+&lt;h3 id=&#34;1-đặc-điểm&#34;&gt;1. Đặc điểm&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Độc lập nền tảng&lt;/li&gt;
+&lt;li&gt;Hướng đối tượng&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Giới thiệu bản thân (Profile)</title>
+      <link>https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/profile/</link>
+      <pubDate>Sat, 18 Oct 2025 22:00:00 +0700</pubDate>
+      <guid>https://github.com/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/profile/</guid>
+      <description>&lt;h2 id=&#34;xin-chào&#34;&gt;Xin chào!&lt;/h2&gt;
+&lt;p&gt;Mình tên là&amp;hellip;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Trường:&lt;/strong&gt; Đại học&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Chuyên ngành:&lt;/strong&gt; Công nghệ thông tin&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Sở thích:&lt;/strong&gt; Lập trình, chơi game&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;kỹ-năng&#34;&gt;Kỹ năng&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Java (Spring Boot)&lt;/li&gt;
+&lt;li&gt;JavaScript (ReactJS)&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>
