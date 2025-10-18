@@ -1,0 +1,58 @@
+# Tên của quy trình tự động
+name: Deploy Hugo site to Pages
+
+# Quy trình này sẽ chạy mỗi khi bạn push code lên nhánh "main"
+on:
+  push:
+    branches:
+      - main  # Đây là nhánh chứa code nguồn của bạn
+  
+  # Cho phép bạn chạy thủ công từ tab Actions trên GitHub
+  workflow_dispatch:
+
+# Thiết lập quyền
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Hủy các lần chạy cũ nếu có push mới
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+# Các bước thực hiện
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Lấy code nguồn của bạn (từ nhánh main)
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # Rất quan trọng, để tải cả theme (PaperMod)
+
+      # 2. Cài đặt HUGO
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest' # Luôn dùng bản Hugo mới nhất
+          extended: true # Cài bản Extended (rất quan trọng cho PaperMod)
+
+      # 3. Build trang web
+      - name: Build
+        run: hugo --minify # Lệnh build trang web
+
+      # 4. Upload trang web (để GitHub Pages sử dụng)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      # 5. Deploy lên GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
