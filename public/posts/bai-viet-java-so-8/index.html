@@ -1,211 +1,392 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="vi-vn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\nTrong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.\n">
+<title>JavaScript &#39;Gọi Điện&#39; Về Server - Fetch API &amp; async/await</title>
 
-<head><script src="/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=NguyenXuanTung2004/Blog_Lap_Trinh_Mang/livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Bai Viet Java So 8 | Blog của Tùng</title>
-<meta name="keywords" content="">
-<meta name="description" content="Bai Viet Java So 8 - Blog của Tùng">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-8/">
-<link crossorigin="anonymous" href="/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-8/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
+<link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-8/'>
+
+<link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="JavaScript 'Gọi Điện' Về Server - Fetch API & async/await">
+<meta property='og:description' content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\nTrong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.\n">
+<meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-8/'>
+<meta property='og:site_name' content='Nguyễn Xuân Tùng'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-10-24T11:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-24T11:00:00&#43;07:00'/>
+<meta name="twitter:title" content="JavaScript 'Gọi Điện' Về Server - Fetch API & async/await">
+<meta name="twitter:description" content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\nTrong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
         }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
+    })();
 </script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
 
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/" accesskey="h" title="Blog của Tùng (Alt + H)">Blog của Tùng</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_ca785c3f2ef7617f.png" width="300"
+                            height="411" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nguyễn Xuân Tùng</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/" title="Blog">
-                    <span>Blog</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/profile/" title="Profile">
-                    <span>Profile</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>Trang Chủ</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/posts' >
+                
+                
+                
+                <span>Bài viết</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/profile' >
+                
+                
+                
+                <span>Profile</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
 
-<article class="post-single">
-  <header class="post-header">
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
     
-    <h1 class="post-title entry-hint-parent">
-      Bai Viet Java So 8
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h1>
-    <div class="post-meta"><span title='2025-10-19 00:39:19 +0700 +07'>October 19, 2025</span>
 
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/h%E1%BB%8Dc-javascript/" >
+                Học JavaScript
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/bai-viet-java-so-8/">JavaScript &#39;Gọi Điện&#39; Về Server - Fetch API &amp; async/await</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 24, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
 </div>
-  </header> 
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
+</header>
+
+    <section class="article-content">
     
-<footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/">Blog của Tùng</a></span> · 
+    
+    <p>Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía <strong>back-end</strong> (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía <strong>front-end</strong> - thế giới của trình duyệt web, nơi <strong>JavaScript</strong> là vua. 👑</p>
+<p>Trong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.</p>
+<p>Cơ chế &ldquo;gọi điện về server&rdquo; mà không cần tải lại trang này được thực hiện chủ yếu thông qua <strong>AJAX (Asynchronous JavaScript and XML)</strong> - mặc dù ngày nay XML ít được dùng hơn JSON. Công cụ tiêu chuẩn và mạnh mẽ nhất để thực hiện AJAX trong JavaScript hiện đại là <strong>Fetch API</strong>.</p>
+<hr>
+<h2 id="fetch-api-người-đưa-tin-hiện-đại-">Fetch API: Người Đưa Tin Hiện Đại 🚀
+</h2><p><code>fetch()</code> là một hàm toàn cục (<code>window.fetch()</code>) được tích hợp sẵn trong hầu hết các trình duyệt hiện đại. Nó cung cấp một cách thức mạnh mẽ và linh hoạt để thực hiện các yêu cầu mạng (chủ yếu là HTTP/HTTPS). Nó là phiên bản hiện đại, mạnh mẽ hơn của <code>XMLHttpRequest</code>.</p>
+<hr>
+<h2 id="thách-thức-cốt-lõi-bất-đồng-bộ-asynchronicity-">Thách Thức Cốt Lõi: Bất Đồng Bộ (Asynchronicity) ⏳
+</h2><p>Đây là khái niệm quan trọng nhất cần hiểu khi làm việc với mạng trong JavaScript. Khi bạn gọi <code>fetch('...')</code>, JavaScript <strong>KHÔNG CHỜ ĐỢI</strong>. Nó tiếp tục thực thi các dòng code tiếp theo ngay lập tức. Vài mili giây hoặc vài giây sau, khi trình duyệt tải xong, JavaScript mới nhận dữ liệu và xử lý. Bất đồng bộ giúp giao diện người dùng luôn mượt mà.</p>
+<p>Để quản lý việc &ldquo;nhận dữ liệu sau&rdquo; này, JavaScript dùng <strong>Promises (Lời hứa)</strong>.</p>
+<hr>
+<h2 id="quản-lý-bất-đồng-bộ-promises-và-then">Quản Lý Bất Đồng Bộ: Promises và <code>.then()</code>
+</h2><p><code>fetch()</code> không trả về dữ liệu ngay lập tức. Nó trả về một <strong>Promise (Lời hứa)</strong>. Promise giống như một giấy hẹn: &ldquo;Tôi hứa sẽ có kết quả (thành công hoặc thất bại) trong tương lai&rdquo;.</p>
+<p>Bạn sử dụng phương thức <code>.then()</code> để &ldquo;đăng ký&rdquo; một hàm callback sẽ được thực thi <strong>khi lời hứa được hoàn thành (resolved)</strong>. Bạn dùng <code>.catch()</code> để xử lý <strong>khi lời hứa thất bại (rejected)</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// Đây là code JavaScript, chạy trong thẻ &lt;script&gt; của file HTML
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Hoặc chạy ngay trong Console (F12) của trình duyệt
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">userListElement</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;user-list&#39;</span>); <span style="color:#75715e">// Giả sử có &lt;ul id=&#34;user-list&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Bắt đầu tải danh sách người dùng...&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">userListElement</span>) <span style="color:#a6e22e">userListElement</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;li&gt;Đang tải...&lt;/li&gt;&#39;</span>; <span style="color:#75715e">// Thông báo đang tải
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;[https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users)&#39;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Nhận được phản hồi từ server (chưa phải dữ liệu)&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Kiểm tra xem server có trả về lỗi HTTP không (4xx, 5xx)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">ok</span>) { 
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// fetch() chỉ reject khi có lỗi mạng thực sự, không phải lỗi HTTP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// Nên phải tự kiểm tra response.ok
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">`HTTP error! status: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">status</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// response.json() cũng trả về một Promise khác!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>(); <span style="color:#75715e">// Promise này resolve với dữ liệu JSON đã parse
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">users</span> =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Đã nhận và parse dữ liệu người dùng:&#34;</span>, <span style="color:#a6e22e">users</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">userListElement</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">userListElement</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>; <span style="color:#75715e">// Xóa chữ &#34;Đang tải...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">users</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">user</span> =&gt; {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">listItem</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;li&#39;</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">listItem</span>.<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">name</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">email</span><span style="color:#e6db74">}</span><span style="color:#e6db74">)`</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">userListElement</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">listItem</span>);
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">error</span> =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;Không thể tải dữ liệu:&#39;</span>, <span style="color:#a6e22e">error</span>);
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">userListElement</span>) <span style="color:#a6e22e">userListElement</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`&lt;li&gt;Lỗi: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">error</span>.<span style="color:#a6e22e">message</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/li&gt;`</span>;
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Code này chạy ngay lập tức, không chờ fetch xong.&#34;</span>);
+</span></span></code></pre></div>
+</section>
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Nguyễn Xuân Tùng
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.31.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.ecd139d3b4f1dafb5cd9c1037f8896e526e5289c3f29b91a454ca1de9d8f178a.js" defer></script>
 <script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
 
+        document.head.appendChild(customFont);
+    }());
 </script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
+    </body>
 </html>

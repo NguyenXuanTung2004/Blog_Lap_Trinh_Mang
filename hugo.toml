@@ -1,42 +1,70 @@
 baseURL = "https://NguyenXuanTung2004.github.io/Blog_Lap_Trinh_Mang/"
-languageCode = "vi-vn"
-title = "Blog của Tùng"
-theme = "PaperMod" # Kích hoạt theme PaperMod
+languageCode = "vi-vn" # Bạn có thể đổi thành "en-us" nếu muốn tiếng Anh
+title = "Nguyễn Xuân Tùng"
+theme = "stack"
+mainSections = ["posts"]
 
 [params]
-# Cấu hình cho trang chủ
-[params.homeInfoParams]
-Title = "Chào mừng đến Blog của Tùng"
-Content = "Đây là nơi mà Tùng sẽ chia sẻ về lập trình Java và JavaScript."
+description = "Đây là nơi Tùng chia sẻ về lập trình Java và JavaScript."
 
-# Cấu hình menu (theo yêu cầu: Home & Blog)
+# --- Cấu hình Trang chủ ---
+[params.homepage]
+layout = "posts"
+showRecent = true
+recentPostsNumber = 5
+
+# --- Cấu hình Profile ---
+[params.sidebar]
+    [params.sidebar.avatar]
+        enabled = true
+        src = "img/avatar.png" # Lấy ảnh từ "assets/img/avatar.png"
+    
+    [params.sidebar.author]
+    name = "Nguyễn Xuân Tùng"
+    headline = "Sinh viên... | Đam mê lập trình..." # Sửa lại thông tin mô tả ngắn của bạn
+
+# --- Cấu hình Menu ---
 [[menu.main]]
-identifier = "blog"
-name = "Blog"
-url = "/posts/" # "Blog" sẽ trỏ đến thư mục /posts/
+identifier = "home"
+name = "Trang Chủ"
+url = "/"
+weight = 5
+
+[[menu.main]]
+identifier = "posts"
+name = "Bài viết"
+url = "/posts"
 weight = 10
 
 [[menu.main]]
 identifier = "profile"
 name = "Profile"
-url = "/profile/" # "Profile" sẽ trỏ đến trang /profile/
+url = "/profile"
 weight = 20
 
-# Cấu hình profile cá nhân ở sidebar (thay thế bằng thông tin của bạn)
-[params.profileMode]
-enabled = true
-title = "Nguyễn Xuân Tùng"
-subtitle = "Sinh viên... | Đam mê lập trình..."
-# imageUrl = "/link-den-anh-the-cua-ban.jpg" # (Tùy chọn)
-# imageWidth = 120
-# imageHeight = 120
-
-# Thêm các nút liên kết (ví dụ)
-[[params.socialIcons]]
+# --- Cấu hình Mạng xã hội (Đã cập nhật) ---
+[[params.social]]
+identifier = "github"
+name = "GitHub"
+url = "https://github.com/NguyenXuanTung2004" # Link GitHub của bạn
+[params.social.icon]
+provider = "fa-brands"
 name = "github"
-url = "https://github.com/NguyenXuanTung2004"
 
-[[params.socialIcons]]
+[[params.social]]
+identifier = "facebook"
+name = "Facebook"
+url = "https://www.facebook.com/nguyen.xuan.tung.498801" # Link Facebook của bạn (đã rút gọn)
+[params.social.icon]
+provider = "fa-brands"
 name = "facebook"
-url = "https://www.facebook.com/nguyen.xuan.tung.498801"
 
+# --- Cấu hình Widget (Khung bên phải) ---
+[params.widgets]
+enabled = ["search", "archives", "categories", "taglist"]
+[params.widgets.archives]
+limit = 5
+[params.widgets.categories]
+limit = 10
+[params.widgets.taglist]
+limit = 20

@@ -1,211 +1,427 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="vi-vn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Chúng ta đã thành thạo việc gửi các chuỗi ký tự (text) qua mạng bằng cả TCP và UDP. Nhưng sức mạnh thực sự của Java nằm ở Lập trình Hướng Đối Tượng (OOP). Sẽ ra sao nếu chúng ta muốn gửi không chỉ là text, mà là toàn bộ trạng thái của một đối tượng Java - ví dụ, một đối tượng User với username, passwordHash, lastLoginTime - từ Client lên Server để lưu vào database, hoặc từ Server gửi xuống Client để cập nhật giao diện?\n">
+<title>Tuần Tự Hóa (Serialization) - Phép Thuật &#39;Đông Lạnh&#39; và &#39;Hồi Sinh&#39; Đối Tượng Java</title>
 
-<head><script src="/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=NguyenXuanTung2004/Blog_Lap_Trinh_Mang/livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Bai Viet Java So 7 | Blog của Tùng</title>
-<meta name="keywords" content="">
-<meta name="description" content="Bai Viet Java So 7 - Blog của Tùng">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-7/">
-<link crossorigin="anonymous" href="/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-7/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
+<link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-7/'>
+
+<link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Tuần Tự Hóa (Serialization) - Phép Thuật 'Đông Lạnh' và 'Hồi Sinh' Đối Tượng Java">
+<meta property='og:description' content="Chúng ta đã thành thạo việc gửi các chuỗi ký tự (text) qua mạng bằng cả TCP và UDP. Nhưng sức mạnh thực sự của Java nằm ở Lập trình Hướng Đối Tượng (OOP). Sẽ ra sao nếu chúng ta muốn gửi không chỉ là text, mà là toàn bộ trạng thái của một đối tượng Java - ví dụ, một đối tượng User với username, passwordHash, lastLoginTime - từ Client lên Server để lưu vào database, hoặc từ Server gửi xuống Client để cập nhật giao diện?\n">
+<meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-7/'>
+<meta property='og:site_name' content='Nguyễn Xuân Tùng'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-10-23T16:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-23T16:00:00&#43;07:00'/>
+<meta name="twitter:title" content="Tuần Tự Hóa (Serialization) - Phép Thuật 'Đông Lạnh' và 'Hồi Sinh' Đối Tượng Java">
+<meta name="twitter:description" content="Chúng ta đã thành thạo việc gửi các chuỗi ký tự (text) qua mạng bằng cả TCP và UDP. Nhưng sức mạnh thực sự của Java nằm ở Lập trình Hướng Đối Tượng (OOP). Sẽ ra sao nếu chúng ta muốn gửi không chỉ là text, mà là toàn bộ trạng thái của một đối tượng Java - ví dụ, một đối tượng User với username, passwordHash, lastLoginTime - từ Client lên Server để lưu vào database, hoặc từ Server gửi xuống Client để cập nhật giao diện?\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
         }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
+    })();
 </script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
 
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/" accesskey="h" title="Blog của Tùng (Alt + H)">Blog của Tùng</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_ca785c3f2ef7617f.png" width="300"
+                            height="411" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nguyễn Xuân Tùng</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/" title="Blog">
-                    <span>Blog</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/profile/" title="Profile">
-                    <span>Profile</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>Trang Chủ</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/posts' >
+                
+                
+                
+                <span>Bài viết</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/profile' >
+                
+                
+                
+                <span>Profile</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
 
-<article class="post-single">
-  <header class="post-header">
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
     
-    <h1 class="post-title entry-hint-parent">
-      Bai Viet Java So 7
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h1>
-    <div class="post-meta"><span title='2025-10-19 00:39:15 +0700 +07'>October 19, 2025</span>
 
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/h%E1%BB%8Dc-java/" >
+                Học Java
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/bai-viet-java-so-7/">Tuần Tự Hóa (Serialization) - Phép Thuật &#39;Đông Lạnh&#39; và &#39;Hồi Sinh&#39; Đối Tượng Java</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 23, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
 </div>
-  </header> 
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
+</header>
+
+    <section class="article-content">
     
-<footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/">Blog của Tùng</a></span> · 
+    
+    <p>Chúng ta đã thành thạo việc gửi các chuỗi ký tự (text) qua mạng bằng cả TCP và UDP. Nhưng sức mạnh thực sự của Java nằm ở Lập trình Hướng Đối Tượng (OOP). Sẽ ra sao nếu chúng ta muốn gửi không chỉ là text, mà là <strong>toàn bộ trạng thái của một đối tượng Java</strong> - ví dụ, một đối tượng <code>User</code> với <code>username</code>, <code>passwordHash</code>, <code>lastLoginTime</code> - từ Client lên Server để lưu vào database, hoặc từ Server gửi xuống Client để cập nhật giao diện?</p>
+<p>Vấn đề là, mạng Internet hay ổ đĩa cứng không hiểu khái niệm &ldquo;đối tượng Java&rdquo; trong bộ nhớ RAM là gì. Chúng chỉ hiểu <strong>dãy các byte (sequence of bytes)</strong>.</p>
+<p><strong>Tuần tự hóa (Serialization)</strong> chính là cây cầu nối giữa hai thế giới này. Nó là quá trình &ldquo;đông lạnh&rdquo; 🥶 một đối tượng Java đang &ldquo;sống&rdquo; trong bộ nhớ (cùng với tất cả các thuộc tính của nó) thành một <strong>luồng byte</strong> tuần tự. Luồng byte này sau đó có thể:</p>
+<ul>
+<li><strong>Lưu trữ:</strong> Ghi ra file để lưu trạng thái (<code>.ser</code>).</li>
+<li><strong>Vận chuyển:</strong> Gửi qua mạng (TCP, UDP).</li>
+<li><strong>Truyền giữa các tiến trình:</strong> Chia sẻ dữ liệu giữa các ứng dụng khác nhau.</li>
+</ul>
+<p><strong>Giải tuần tự hóa (Deserialization)</strong> là quá trình ngược lại: đọc luồng byte đó từ file hoặc từ mạng và &ldquo;rã đông&rdquo; 🔥, tái tạo lại (reconstruct) một bản sao y hệt của đối tượng ban đầu trong bộ nhớ.</p>
+<hr>
+<h2 id="điều-kiện-tiên-quyết-giao-diện-javaioserializable">Điều Kiện Tiên Quyết: Giao Diện <code>java.io.Serializable</code>
+</h2><p>Để một đối tượng Java có khả năng được &ldquo;đông lạnh&rdquo;, Lớp (Class) của nó <strong>bắt buộc</strong> phải triển khai (implements) giao diện <code>java.io.Serializable</code>.</p>
+<p><code>Serializable</code> là một <strong>Marker Interface</strong> (Giao diện đánh dấu). Nó không định nghĩa bất kỳ phương thức nào mà lớp của bạn phải viết code. Việc <code>implements Serializable</code> chỉ đơn giản là một &ldquo;tín hiệu&rdquo; báo cho JVM biết rằng &ldquo;Tôi cho phép đối tượng thuộc lớp này được tuần tự hóa&rdquo;. JVM sẽ tự động lo phần còn lại dựa trên cấu trúc của lớp.</p>
+<p><strong>Quan trọng:</strong> Nếu lớp của bạn chứa thuộc tính là đối tượng của lớp khác (ví dụ: <code>User</code> có thuộc tính <code>Address address</code>), thì lớp <code>Address</code> đó <strong>cũng phải</strong> <code>implements Serializable</code>. Nếu không, quá trình tuần tự hóa sẽ thất bại.</p>
+<hr>
+<h2 id="bộ-đôi-quyền-lực-objectoutputstream--objectinputstream">Bộ Đôi Quyền Lực: <code>ObjectOutputStream</code> &amp; <code>ObjectInputStream</code>
+</h2><p>Để thực hiện việc &ldquo;đông lạnh&rdquo; và &ldquo;hồi sinh&rdquo;, Java cung cấp hai lớp luồng đặc biệt (thuộc mô hình Decorator):</p>
+<ul>
+<li><strong><code>java.io.ObjectOutputStream</code>:</strong> Dùng để <strong>tuần tự hóa (ghi)</strong> đối tượng. Nó &ldquo;bọc&rdquo; một <code>OutputStream</code> cơ bản và có phương thức <code>writeObject(yourObject)</code>.</li>
+<li><strong><code>java.io.ObjectInputStream</code>:</strong> Dùng để <strong>giải tuần tự hóa (đọc)</strong> đối tượng. Nó &ldquo;bọc&rdquo; một <code>InputStream</code> cơ bản và có phương thức <code>readObject()</code>, trả về <code>Object</code> (cần ép kiểu).</li>
+</ul>
+<hr>
+<h2 id="ví-dụ-lưu-và-tải-lại-đối-tượng-user-vào-file">Ví dụ: Lưu và Tải lại Đối Tượng <code>User</code> vào File
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Lớp User phải Serializable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">implements</span> Serializable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> serialVersionUID <span style="color:#f92672">=</span> 1L; <span style="color:#75715e">// Để quản lý phiên bản</span>
+</span></span><span style="display:flex;"><span>    String username;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">transient</span> String password; <span style="color:#75715e">// Thuộc tính này sẽ KHÔNG được lưu</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> level;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">User</span>(String username, String password, <span style="color:#66d9ef">int</span> level) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">username</span> <span style="color:#f92672">=</span> username;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">level</span> <span style="color:#f92672">=</span> level;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Lưu ý: Password sẽ là null khi đọc lại do &#39;transient&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;User [username=&#34;</span> <span style="color:#f92672">+</span> username <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, password=&#34;</span> <span style="color:#f92672">+</span> password <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, level=&#34;</span> <span style="color:#f92672">+</span> level <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Lớp chính để chạy demo</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SerializationFileDemo</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        String filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user.ser&#34;</span>; <span style="color:#75715e">// File để lưu đối tượng</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --- BƯỚC 1: TẠO VÀ TUẦN TỰ HÓA (GHI) ĐỐI TƯỢNG ---</span>
+</span></span><span style="display:flex;"><span>        User userToWrite <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> User(<span style="color:#e6db74">&#34;NguyenVanA&#34;</span>, <span style="color:#e6db74">&#34;mySecret123&#34;</span>, 5);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Đối tượng gốc:\n&#34;</span> <span style="color:#f92672">+</span> userToWrite);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> (
+</span></span><span style="display:flex;"><span>            FileOutputStream fos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream(filename);
+</span></span><span style="display:flex;"><span>            ObjectOutputStream oos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectOutputStream(fos) <span style="color:#75715e">// Bọc FileOutputStream</span>
+</span></span><span style="display:flex;"><span>        ) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;\nĐang tuần tự hóa và ghi ra file...&#34;</span>);
+</span></span><span style="display:flex;"><span>            oos.<span style="color:#a6e22e">writeObject</span>(userToWrite); <span style="color:#75715e">// Thực hiện &#34;đông lạnh&#34; và ghi</span>
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Ghi file thành công!&#34;</span>);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Lỗi khi ghi đối tượng: &#34;</span> <span style="color:#f92672">+</span> e.<span style="color:#a6e22e">getMessage</span>());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --- BƯỚC 2: GIẢI TUẦN TỰ HÓA (ĐỌC) ĐỐI TƯỢNG ---</span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;\n--- Đọc lại đối tượng từ file ---&#34;</span>);
+</span></span><span style="display:flex;"><span>        User userToRead <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> (
+</span></span><span style="display:flex;"><span>            FileInputStream fis <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileInputStream(filename);
+</span></span><span style="display:flex;"><span>            ObjectInputStream ois <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectInputStream(fis) <span style="color:#75715e">// Bọc FileInputStream</span>
+</span></span><span style="display:flex;"><span>        ) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Đang đọc và giải tuần tự hóa...&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Đọc từ luồng byte và &#34;hồi sinh&#34; thành đối tượng User</span>
+</span></span><span style="display:flex;"><span>            userToRead <span style="color:#f92672">=</span> (User) ois.<span style="color:#a6e22e">readObject</span>(); 
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Đọc thành công!&#34;</span>);
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Đối tượng đọc được:\n&#34;</span> <span style="color:#f92672">+</span> userToRead);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Lỗi khi đọc đối tượng: &#34;</span> <span style="color:#f92672">+</span> e.<span style="color:#a6e22e">getMessage</span>());
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (ClassNotFoundException e) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Xảy ra nếu chương trình đọc không tìm thấy file .class của lớp User</span>
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Lỗi: Không tìm thấy lớp &#39;User&#39; khi giải tuần tự hóa.&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Nguyễn Xuân Tùng
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.31.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.ecd139d3b4f1dafb5cd9c1037f8896e526e5289c3f29b91a454ca1de9d8f178a.js" defer></script>
 <script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
 
+        document.head.appendChild(customFont);
+    }());
 </script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
+    </body>
 </html>

@@ -1,211 +1,432 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="vi-vn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\nĐặc điểm chính của UDP:\nKhông Kết Nối (Connectionless): Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (DatagramPacket) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (DatagramSocket) ở cổng đó và chờ thư đến. Không Đáng Tin Cậy (Unreliable): Internet (bưu điện) không đảm bảo bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý. Không Theo Thứ Tự (Out-of-Order Delivery): Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự. Nhẹ và Nhanh (Lightweight &amp; Fast): Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết. Khi nào nên dùng UDP? Khi tốc độ quan trọng hơn độ tin cậy tuyệt đối, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.\n">
+<title>Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần &#39;Bắt Tay&#39;</title>
 
-<head><script src="/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=NguyenXuanTung2004/Blog_Lap_Trinh_Mang/livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Bai Viet Java So 6 | Blog của Tùng</title>
-<meta name="keywords" content="">
-<meta name="description" content="Bai Viet Java So 6 - Blog của Tùng">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-6/">
-<link crossorigin="anonymous" href="/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/bai-viet-java-so-6/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
+<link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-6/'>
+
+<link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần 'Bắt Tay'">
+<meta property='og:description' content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\nĐặc điểm chính của UDP:\nKhông Kết Nối (Connectionless): Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (DatagramPacket) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (DatagramSocket) ở cổng đó và chờ thư đến. Không Đáng Tin Cậy (Unreliable): Internet (bưu điện) không đảm bảo bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý. Không Theo Thứ Tự (Out-of-Order Delivery): Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự. Nhẹ và Nhanh (Lightweight &amp; Fast): Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết. Khi nào nên dùng UDP? Khi tốc độ quan trọng hơn độ tin cậy tuyệt đối, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.\n">
+<meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-6/'>
+<meta property='og:site_name' content='Nguyễn Xuân Tùng'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2025-10-22T15:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-22T15:00:00&#43;07:00'/>
+<meta name="twitter:title" content="Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần 'Bắt Tay'">
+<meta name="twitter:description" content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\nĐặc điểm chính của UDP:\nKhông Kết Nối (Connectionless): Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (DatagramPacket) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (DatagramSocket) ở cổng đó và chờ thư đến. Không Đáng Tin Cậy (Unreliable): Internet (bưu điện) không đảm bảo bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý. Không Theo Thứ Tự (Out-of-Order Delivery): Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự. Nhẹ và Nhanh (Lightweight &amp; Fast): Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết. Khi nào nên dùng UDP? Khi tốc độ quan trọng hơn độ tin cậy tuyệt đối, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
         }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
+    })();
 </script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
 
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/" accesskey="h" title="Blog của Tùng (Alt + H)">Blog của Tùng</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_ca785c3f2ef7617f.png" width="300"
+                            height="411" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nguyễn Xuân Tùng</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/posts/" title="Blog">
-                    <span>Blog</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/profile/" title="Profile">
-                    <span>Profile</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>Trang Chủ</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/posts' >
+                
+                
+                
+                <span>Bài viết</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/profile' >
+                
+                
+                
+                <span>Profile</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
 
-<article class="post-single">
-  <header class="post-header">
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
     
-    <h1 class="post-title entry-hint-parent">
-      Bai Viet Java So 6
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h1>
-    <div class="post-meta"><span title='2025-10-19 00:39:13 +0700 +07'>October 19, 2025</span>
 
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/h%E1%BB%8Dc-java/" >
+                Học Java
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/bai-viet-java-so-6/">Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần &#39;Bắt Tay&#39;</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 22, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
 </div>
-  </header> 
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
+</header>
+
+    <section class="article-content">
     
-<footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/NguyenXuanTung2004/Blog_Lap_Trinh_Mang/">Blog của Tùng</a></span> · 
+    
+    <p>Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, <strong>UDP (User Datagram Protocol)</strong> giống như việc bạn <strong>viết thông tin lên một loạt bưu thiếp và thả vào hòm thư</strong> 📮.</p>
+<p>Đặc điểm chính của UDP:</p>
+<ol>
+<li><strong>Không Kết Nối (Connectionless):</strong> Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (<code>DatagramPacket</code>) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (<code>DatagramSocket</code>) ở cổng đó và chờ thư đến.</li>
+<li><strong>Không Đáng Tin Cậy (Unreliable):</strong> Internet (bưu điện) <strong>không đảm bảo</strong> bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý.</li>
+<li><strong>Không Theo Thứ Tự (Out-of-Order Delivery):</strong> Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự.</li>
+<li><strong>Nhẹ và Nhanh (Lightweight &amp; Fast):</strong> Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết.</li>
+</ol>
+<p><strong>Khi nào nên dùng UDP?</strong>
+Khi <strong>tốc độ</strong> quan trọng hơn <strong>độ tin cậy tuyệt đối</strong>, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.</p>
+<ul>
+<li><strong>Game thời gian thực (Real-time Gaming):</strong> Gửi vị trí người chơi. Mất một gói tin vị trí cũ không quá tệ, miễn là các vị trí mới đến nhanh.</li>
+<li><strong>Truyền phát Video/Audio (Streaming - VoIP, IPTV):</strong> Mất một vài khung hình/mẫu âm thanh thường ít ảnh hưởng hơn là bị giật/lag do chờ gói tin bị mất của TCP.</li>
+<li><strong>DNS (Domain Name System):</strong> Yêu cầu phân giải tên miền cần phản hồi nhanh nhất có thể.</li>
+<li><strong>DHCP (Dynamic Host Configuration Protocol):</strong> Cấp phát địa chỉ IP trong mạng LAN.</li>
+</ul>
+<h3 id="thành-phần-chính-datagramsocket-và-datagrampacket">Thành Phần Chính: <code>DatagramSocket</code> và <code>DatagramPacket</code>
+</h3><p>Thay vì <code>Socket</code> và <code>Stream</code> của TCP, UDP dùng:</p>
+<ul>
+<li><code>java.net.DatagramSocket</code>: Đại diện cho &ldquo;hòm thư&rdquo; tại một cổng (port) cụ thể trên máy bạn. Nó dùng để <strong>gửi</strong> và <strong>nhận</strong> các <code>DatagramPacket</code>.</li>
+<li><code>java.net.DatagramPacket</code>: Chính là &ldquo;tấm bưu thiếp&rdquo;. Nó là một gói dữ liệu chứa:
+<ul>
+<li>Mảng byte dữ liệu (<code>byte[] data</code>).</li>
+<li>Độ dài dữ liệu (<code>int length</code>).</li>
+<li>Địa chỉ IP của người nhận/người gửi (<code>InetAddress address</code>).</li>
+<li>Cổng của người nhận/người gửi (<code>int port</code>).</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-udpechoserverjava---người-nhận-và-phản-hồi-bưu-thiếp-">1. <code>UDPEchoServer.java</code> - Người Nhận và Phản Hồi Bưu Thiếp 📬
+</h3><p>Server tạo <code>DatagramSocket</code> để lắng nghe trên một cổng cố định.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.DatagramSocket;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.DatagramPacket;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.InetAddress;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UDPEchoServer</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> PORT <span style="color:#f92672">=</span> 9876; <span style="color:#75715e">// Cổng lắng nghe</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> BUFFER_SIZE <span style="color:#f92672">=</span> 1024; <span style="color:#75715e">// Kích thước tối đa của một bưu thiếp nhận</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        DatagramSocket socket <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 1. Tạo DatagramSocket để lắng nghe trên PORT</span>
+</span></span><span style="display:flex;"><span>            socket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatagramSocket(PORT);
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;UDP Echo Server đang lắng nghe trên cổng &#34;</span> <span style="color:#f92672">+</span> PORT <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;...&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> receiveBuffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>BUFFER_SIZE<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Vòng lặp vô hạn để phục vụ nhiều client (nhưng vẫn đơn tuyến)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) { 
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 2. Tạo DatagramPacket rỗng để chuẩn bị nhận dữ liệu</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Packet này sẽ được điền thông tin (dữ liệu, IP, port người gửi) khi nhận</span>
+</span></span><span style="display:flex;"><span>                DatagramPacket receivePacket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatagramPacket(receiveBuffer, receiveBuffer.<span style="color:#a6e22e">length</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 3. Chờ nhận Packet (blocking call)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Chương trình sẽ dừng ở đây cho đến khi có packet đến</span>
+</span></span><span style="display:flex;"><span>                socket.<span style="color:#a6e22e">receive</span>(receivePacket); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 4. Xử lý Packet nhận được</span>
+</span></span><span style="display:flex;"><span>                InetAddress clientAddress <span style="color:#f92672">=</span> receivePacket.<span style="color:#a6e22e">getAddress</span>(); <span style="color:#75715e">// Lấy IP người gửi</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">int</span> clientPort <span style="color:#f92672">=</span> receivePacket.<span style="color:#a6e22e">getPort</span>();            <span style="color:#75715e">// Lấy Port người gửi</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Lấy dữ liệu, chỉ lấy đúng phần có nội dung (getLength)</span>
+</span></span><span style="display:flex;"><span>                String clientMessage <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String(receivePacket.<span style="color:#a6e22e">getData</span>(), 0, receivePacket.<span style="color:#a6e22e">getLength</span>()); 
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Nhận từ [&#34;</span> <span style="color:#f92672">+</span> clientAddress.<span style="color:#a6e22e">getHostAddress</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> clientPort <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]: &#34;</span> <span style="color:#f92672">+</span> clientMessage);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 5. Chuẩn bị Packet để gửi phản hồi (echo)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> sendBuffer <span style="color:#f92672">=</span> clientMessage.<span style="color:#a6e22e">toUpperCase</span>().<span style="color:#a6e22e">getBytes</span>(); <span style="color:#75715e">// Chuyển thành chữ hoa rồi gửi lại</span>
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Tạo Packet gửi đi, chỉ rõ địa chỉ và port của Client đã gửi đến</span>
+</span></span><span style="display:flex;"><span>                DatagramPacket sendPacket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DatagramPacket(sendBuffer, sendBuffer.<span style="color:#a6e22e">length</span>, clientAddress, clientPort);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 6. Gửi Packet phản hồi</span>
+</span></span><span style="display:flex;"><span>                socket.<span style="color:#a6e22e">send</span>(sendPacket);
+</span></span><span style="display:flex;"><span>                System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;   -&gt; Đã gửi phản hồi echo (chữ hoa)&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Reset buffer nhận cho lần lặp sau (không bắt buộc nhưng nên làm)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// receiveBuffer = new byte[BUFFER_SIZE]; // Hoặc dùng Arrays.fill</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Lỗi Server UDP: &#34;</span> <span style="color:#f92672">+</span> e.<span style="color:#a6e22e">getMessage</span>());
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (socket <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>socket.<span style="color:#a6e22e">isClosed</span>()) {
+</span></span><span style="display:flex;"><span>                socket.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>                System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Server UDP đã đóng.&#34;</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Nguyễn Xuân Tùng
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.31.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.ecd139d3b4f1dafb5cd9c1037f8896e526e5289c3f29b91a454ca1de9d8f178a.js" defer></script>
 <script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
 
+        document.head.appendChild(customFont);
+    }());
 </script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
+    </body>
 </html>
