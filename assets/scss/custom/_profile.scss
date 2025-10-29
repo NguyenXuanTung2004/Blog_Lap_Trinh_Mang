@@ -1,0 +1,252 @@
+/* --- BẮT ĐẦU CSS PROFILE TÙY CHỈNH --- */
+
+/* Ẩn đường kẻ dọc và ngang mặc định của theme cho các tiêu đề trong profile */
+.profile-page .profile-section h2,
+.profile-page .profile-section h3 {
+    border: none !important; 
+    padding-bottom: 0 !important; /* Bỏ padding gây ra gạch chân */
+    text-align: center !important; /* Giữ lại căn giữa */
+    margin-bottom: 25px !important; /* Điều chỉnh khoảng cách */
+    position: relative; /* Bỏ position relative nếu theme dùng ::before */
+}
+.profile-page .profile-section h2::before, /* Ẩn đường kẻ dọc ::before (nếu có) */
+.profile-page .profile-section h3::before {
+    display: none !important;
+}
+
+
+/* Kiểu dáng chung cho HTML tùy chỉnh */
+.profile-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center; 
+}
+
+.profile-header {
+    text-align: center !important; 
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.profile-avatar {
+    width: 150px; 
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 20px !important; 
+    display: block !important; 
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 4px solid #ffffff;
+}
+
+.profile-name {
+    font-size: 2.2em; 
+    color: #2c3e50;
+    margin: 10px 0;
+    font-weight: 600;
+    text-align: center !important;
+}
+
+.profile-title {
+    font-size: 1.1em;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    text-align: center !important;
+}
+
+.profile-section {
+    padding: 30px;
+    border-radius: 12px;
+    margin: 30px auto !important; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 700px; 
+    text-align: center; 
+}
+
+/* Skills Grid - CSS cho 2 cột Kỹ Năng Chuyên Môn */
+.skills-grid {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 40px; 
+    margin-top: 20px;
+}
+.skill-category {
+    flex: 1; 
+    min-width: 280px; 
+    text-align: left; /* Căn trái nội dung bên trong cột */
+}
+.skill-category h3 { /* Tiêu đề Phân tích DL, Lập Trình */
+     text-align: center !important; /* Căn giữa lại H3 */
+}
+.skill-category ul {
+    list-style: disc; 
+    padding-left: 25px; 
+    margin: 15px 0 0; /* Bỏ căn giữa auto */
+    /* display: inline-block; */ /* Bỏ đi để nó chiếm đủ chiều rộng cột */
+    text-align: left; 
+}
+
+/* Soft Skills - CSS cho Ngôi sao */
+.skills-soft-list {
+    margin-top: 20px; 
+    max-width: 400px; /* Thu hẹp lại chút */
+    margin-left: auto; 
+    margin-right: auto; 
+    text-align: left;
+}
+.skill-item {
+    margin-bottom: 15px;
+    display: flex; /* Dùng flex để xếp hàng ngang */
+    justify-content: space-between; /* Đẩy sao ra cuối */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+.skill-item p {
+    margin: 0; /* Bỏ margin mặc định */
+    color: #2c3e50; 
+    font-weight: 600;
+}
+.stars {
+    color: #f39c12; /* Màu vàng cho sao */
+    font-size: 1.1em; /* Cỡ sao */
+}
+.stars .fa-star-half-alt { /* Sao nửa (nếu dùng) */
+     color: #f39c12;
+}
+.stars .far { /* Sao rỗng (nền) */
+    color: #e0e0e0; /* Màu xám nhạt */
+}
+
+/* Contact List */
+.contact-list { 
+    list-style: none;
+    padding: 0;
+    text-align: center;
+    margin: 20px 0;
+}
+.contact-list li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+.contact-list i {
+    margin-right: 8px;
+    color: #3498db;
+    width: 20px; 
+    display: inline-block;
+    text-align: center;
+}
+ .contact-list a {
+     color: #2c3e50;
+     text-decoration: none;
+ }
+ .contact-list a:hover {
+     text-decoration: underline;
+ }
+
+/* Thank You section */
+.thank-you {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.thank-you h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+ .thank-you p {
+    color: #7f8c8d; 
+    margin: 5px 0;
+}
+
+strong {
+    color: #34495e;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-page {
+        padding: 10px;
+    }
+
+    .profile-header {
+        padding: 20px 10px;
+    }
+
+    .profile-avatar {
+        width: 120px; 
+        height: 120px;
+    }
+
+    .profile-name {
+        font-size: 1.8em;
+    }
+
+    .profile-section {
+        padding: 20px;
+        margin: 20px auto !important; 
+    }
+
+    .skills-grid {
+         gap: 20px; /* Giảm khoảng cách cột trên mobile */
+    }
+    .skill-category {
+         min-width: 100%; /* Mỗi cột chiếm 100% trên mobile */
+    }
+
+    .skills-soft-list {
+        max-width: 90%; /* Rộng hơn trên mobile */
+    }
+}
+
+/* --- CSS cho phần Chứng chỉ --- */
+.certificates-grid {
+    display: grid;
+    /* Tạo các cột tự động vừa, chiều rộng tối thiểu 300px */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px; /* Khoảng cách giữa các ảnh */
+    margin-top: 20px;
+}
+
+.certificate-item {
+    border: 1px solid #eee; /* Đường viền mờ */
+    border-radius: 8px;     /* Bo góc */
+    overflow: hidden;       /* Đảm bảo ảnh không tràn viền */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+    transition: transform 0.2s ease-in-out; /* Hiệu ứng khi rê chuột */
+}
+
+.certificate-item:hover {
+    transform: translateY(-3px); /* Nhấc lên một chút khi rê chuột */
+}
+
+.certificate-item img {
+    width: 100%;            /* Ảnh tự co giãn theo chiều rộng ô */
+    height: auto;           /* Giữ đúng tỷ lệ ảnh */
+    display: block;         /* Bỏ khoảng trắng thừa dưới ảnh */
+}
+
+/* Điều chỉnh max-width cho section chứa grid */
+.profile-section:has(.certificates-grid) { 
+    max-width: 900px !important; /* Rộng hơn để chứa grid đẹp hơn */
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 700px) {
+    .certificates-grid {
+         /* 1 cột trên màn hình nhỏ */
+        grid-template-columns: 1fr; 
+        gap: 15px;
+    }
+    .profile-section:has(.certificates-grid) { 
+        max-width: 95% !important; /* Gần full chiều rộng */
+    }
+}

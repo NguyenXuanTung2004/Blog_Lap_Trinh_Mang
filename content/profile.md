@@ -1,59 +1,136 @@
 ---
-title: "Giới thiệu bản thân"
-date: 2025-10-25T23:00:00+07:00
+title: "Profile"
+date: "2025-10-25T23:00:00+07:00"
 draft: false
 ---
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-## Xin chào! Tôi là Nguyễn Xuân Tùng 👋
+{{< rawhtml >}}
 
-Chào mừng bạn đến với góc nhỏ của tôi trên mạng Internet!
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
 
-Tôi là một **Lập trình viên Hệ thống thông tin**, với niềm đam mê khám phá cách dữ liệu chảy qua các hệ thống và cách biến những dòng code thành các giải pháp hữu ích. Công việc hàng ngày của tôi xoay quanh việc xây dựng và duy trì các hệ thống thông tin, đảm bảo chúng hoạt động hiệu quả và ổn định.
+<div class="profile-page">
+    <div class="profile-header" ...> 
+    
+<div class="profile-page">
+    <div class="profile-header" style="text-align: center;">
+        <img src="/images/avatar.png" alt="Nguyễn Xuân Tùng" class="profile-avatar" style="width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px; display: block; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 4px solid #ffffff;">
+        <h1 class="profile-name" style="font-size: 2.2em; color: #2c3e50; margin: 10px 0; font-weight: 600;">Nguyễn Xuân Tùng</h1>
+        <p class="profile-title" style="font-size: 1.1em; color: #7f8c8d; margin-bottom: 20px;">Lập trình viên Hệ Thống Thông Tin</p>
+    </div>
 
-Song song đó, tôi có một sự quan tâm đặc biệt đến lĩnh vực **Phân tích Dữ liệu (Data Analysis)**. Việc "trò chuyện" với dữ liệu thông qua SQL, trực quan hóa thông tin để tìm ra những insight giá trị là một phần không thể thiếu trong quá trình phát triển chuyên môn của tôi.
+    <div class="profile-section" style="text-align: center; padding: 30px; border-radius: 12px; margin: 30px auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 700px;">
+    <h2 style="display: inline-block; border-bottom: 2px solid #3498db; padding-bottom: 10px; color: #2c3e50; margin-bottom: 25px; font-size: 1.5em;">🎓 Học Vấn</h2>
+    <ul class="education-list" style="list-style: none; padding: 0; margin-top: 15px; text-align: center;"> 
+        <li style="margin-bottom: 12px; line-height: 1.6; color: #2c3e50;"><strong>Chuyên ngành:</strong> Lập trình viên Hệ thống thông tin</li>
+        <li style="margin-bottom: 12px; line-height: 1.6; color: #2c3e50;"><strong>Trường:</strong> Đại Học Công Nghệ Tp Hồ Chí Minh (HUTECH)</li>
+        <li style="margin-bottom: 12px; line-height: 1.6; color: #2c3e50;"><strong>Cơ sở:</strong> Thủ Đức Campus</li>
+    </ul>
+</div>
 
----
+    <div class="profile-section" style="text-align: center; padding: 30px; border-radius: 12px; margin: 30px auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 700px;">
+        <h2 style="display: inline-block; border-bottom: 2px solid #3498db; padding-bottom: 10px; color: #2c3e50; margin-bottom: 25px; font-size: 1.5em;">💻 Kỹ Năng Chuyên Môn</h2>
+        <div class="skills-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 20px;">
+            <div class="skill-category" style="flex: 1; min-width: 280px; text-align: left;">
+                <h3 style="color: #34495e; margin: 20px 0 15px; font-size: 1.3em; text-align: center;">Phân Tích Dữ Liệu</h3>
+                <ul style="list-style: disc; padding-left: 25px; margin: 15px auto 0; display: inline-block; text-align: left;">
+                    <li>Truy vấn dữ liệu phức tạp</li>
+                    <li>Tối ưu hóa câu truy vấn</li>
+                    <li>Làm việc với SQL Server, MySQL</li>
+                </ul>
+            </div>
+            <div class="skill-category" style="flex: 1; min-width: 280px; text-align: left;">
+                <h3 style="color: #34495e; margin: 20px 0 15px; font-size: 1.3em; text-align: center;">Lập Trình</h3>
+                <ul style="list-style: disc; padding-left: 25px; margin: 15px auto 0; display: inline-block; text-align: left;">
+                    <li><strong>Java:</strong> Back-end development, APIs</li>
+                    <li><strong>JavaScript:</strong> Front-end, UI/UX</li>
+                    <li><strong>Cơ sở dữ liệu:</strong> Thiết kế & Quản lý</li>
+                    <li><strong>Version Control:</strong> Git</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-## Tại sao lại có Blog này? 🤔
+    <div class="profile-section" style="text-align: center; padding: 30px; border-radius: 12px; margin: 30px auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 700px;">
+        <h2 style="display: inline-block; border-bottom: 2px solid #3498db; padding-bottom: 10px; color: #2c3e50; margin-bottom: 25px; font-size: 1.5em;"> Kỹ Năng Mềm</h2>
+        <div class="skills-soft-list" style="margin-top: 20px; max-width: 400px; margin-left: auto; margin-right: auto; text-align: left;">
+    <div class="skill-item" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <p style="margin: 0; color: #2c3e50; font-weight: 600;">Làm việc nhóm</p>
+        <div class="stars" style="color: #f39c12; font-size: 1.1em;">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i> </div>
+    </div>
+    <div class="skill-item" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <p style="margin: 0; color: #2c3e50; font-weight: 600;">Quản lý thời gian</p>
+        <div class="stars" style="color: #f39c12; font-size: 1.1em;">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i> </div>
+    </div>
+    <div class="skill-item" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <p style="margin: 0; color: #2c3e50; font-weight: 600;">Giao tiếp</p>
+        <div class="stars" style="color: #f39c12; font-size: 1.1em;">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i> </div>
+    </div>
+    <div class="skill-item" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <p style="margin: 0; color: #2c3e50; font-weight: 600;">Phân tích vấn đề</p>
+        <div class="stars" style="color: #f39c12; font-size: 1.1em;">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i> </div>
+    </div>
 
-Blog này ra đời như một "cuốn sổ tay" kỹ thuật cá nhân. Đây là nơi tôi ghi lại những gì mình học được, những kinh nghiệm "xương máu" trong quá trình tìm hiểu sâu hơn về **Lập trình mạng với Java và JavaScript** - hai công nghệ nền tảng mạnh mẽ trong thế giới phần mềm.
+    <div class="profile-section" style="text-align: center; padding: 30px; border-radius: 12px; margin: 30px auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 700px;"> 
+    <h2 style="display: inline-block; border-bottom: 2px solid #3498db; padding-bottom: 10px; color: #2c3e50; margin-bottom: 25px; font-size: 1.5em;">📜Chứng Chỉ</h2>
+    <div class="certificates-grid" style="display: grid; grid-template-columns: 1fr; gap: 25px; margin-top: 20px;"> 
 
-Tôi tin rằng cách tốt nhất để thực sự hiểu một vấn đề là cố gắng giải thích nó cho người khác. Vì vậy, các bài viết ở đây sẽ tập trung vào:
+        <div class="certificate-item" style="border: 1px solid #eee; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <a href="/images/certificates/cert-js-essentials-1.jpg" data-lightbox="certificates" data-title="Chứng chỉ JavaScript Essentials 1">
+                <img src="/images/certificates/cert-js-essentials-1.jpg" alt="Chứng chỉ JavaScript Essentials 1" style="width: 100%; height: auto; display: block;"> 
+            </a>
+        </div>
 
-* **Giải thích các khái niệm cốt lõi:** Từ cơ bản (Sockets, Streams) đến nâng cao (Multithreading, RMI, APIs).
-* **Ví dụ code thực tế:** Cung cấp các đoạn code minh họa dễ hiểu, có thể chạy được.
-* **Góc nhìn hệ thống:** Kết nối các kiến thức lập trình mạng vào bức tranh lớn hơn của một hệ thống thông tin.
+        <div class="certificate-item" style="border: 1px solid #eee; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+             <a href="/images/certificates/cert-js-essentials-2.jpg" data-lightbox="certificates" data-title="Chứng chỉ JavaScript Essentials 2">
+                <img src="/images/certificates/cert-js-essentials-2.jpg" alt="Chứng chỉ JavaScript Essentials 2" style="width: 100%; height: auto; display: block;"> 
+             </a>
+        </div>
 
-Hy vọng rằng những chia sẻ này không chỉ giúp tôi củng cố kiến thức mà còn có thể hữu ích cho bạn trên con đường học tập và làm việc.
+        <div class="certificate-item" style="border: 1px solid #eee; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+             <a href="/images/certificates/cert-networking-basics.jpg" data-lightbox="certificates" data-title="Chứng chỉ Networking Basics">
+                <img src="/images/certificates/cert-networking-basics.jpg" alt="Chứng chỉ Networking Basics" style="width: 100%; height: auto; display: block;">
+             </a> 
+        </div>
 
----
+    </div>
+</div>
+</div>
+</div>
+ </div>
+    </div>
 
-## Kỹ Năng Chuyên Môn 💻
+    <div class="profile-section" style="text-align: center; padding: 30px; border-radius: 12px; margin: 30px auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 700px;">
+        <h2 style="display: inline-block; border-bottom: 2px solid #3498db; padding-bottom: 10px; color: #2c3e50; margin-bottom: 25px; font-size: 1.5em;">📬 Liên Hệ</h2>
+        <ul class="contact-list" style="list-style: none; padding: 0; text-align: center; margin: 20px 0;">
+             <li style="margin-bottom: 10px;">
+                 <i class="fas fa-envelope" style="margin-right: 8px; color: #3498db; width: 20px; display: inline-block; text-align: center;"></i>
+                 <strong>Email:</strong> <a href="mailto:tgkg12a6@gmail.com" style="color: #2c3e50; text-decoration: none;">tgkg12a6@gmail.com</a>
+             </li>
+             <li style="margin-bottom: 10px;">
+                 <i class="fas fa-phone" style="margin-right: 8px; color: #3498db; width: 20px; display: inline-block; text-align: center;"></i>
+                 <strong>Điện thoại:</strong> <a href="tel:0916700887" style="color: #2c3e50; text-decoration: none;">0916 700 887</a>
+             </li>
+             <li style="margin-bottom: 10px;">
+                 <i class="fab fa-github" style="margin-right: 8px; color: #3498db; width: 20px; display: inline-block; text-align: center;"></i>
+                 <strong>GitHub:</strong> <a href="https://github.com/NguyenXuanTung2004" target="_blank" style="color: #2c3e50; text-decoration: none;">@NguyenXuanTung2004</a>
+             </li>
+             <li style="margin-bottom: 10px;">
+                 <i class="fab fa-facebook" style="margin-right: 8px; color: #3498db; width: 20px; display: inline-block; text-align: center;"></i>
+                 <strong>Facebook:</strong> <a href="https://www.facebook.com/nguyen.xuan.tung.498801" target="_blank" style="color: #2c3e50; text-decoration: none;">Nguyễn Xuân Tùng</a>
+             </li>
+         </ul>
+    </div>
 
-Dưới đây là một số lĩnh vực và công nghệ tôi đang làm việc và trau dồi:
-
-* **Phân Tích Dữ Liệu:**
-    * **SQL:** Truy vấn, làm sạch, biến đổi và phân tích dữ liệu trên các hệ quản trị CSDL (PostgreSQL, SQL Server, MySQL...).
-    * **Trực quan hóa dữ liệu:** Sử dụng các công cụ như Power BI, Tableau, hoặc thư viện Python (Matplotlib, Seaborn) để tạo báo cáo và dashboard.
-    * **Xử lý dữ liệu:** Kỹ năng làm sạch (cleaning), tiền xử lý (preprocessing) dữ liệu.
-
-* **Lập Trình:**
-    * **Java:** Ngôn ngữ chính cho các ứng dụng back-end, xử lý logic nghiệp vụ.
-    * **JavaScript:** Xây dựng giao diện người dùng tương tác, làm việc với APIs.
-* **Cơ sở dữ liệu:** Thiết kế, quản lý và tối ưu hóa CSDL quan hệ.
-* **Công cụ & Khác:** Git, Docker (cơ bản), API Design...
-
----
-
-## Liên Hệ 📬
-
-Nếu bạn có câu hỏi, góp ý, hoặc đơn giản là muốn kết nối, đừng ngần ngại liên hệ với tôi:
-
-* **Email:** [tgkg12a6@gmail.com](mailto:tgkg12a6@gmail.com)
-* **Số điện thoại:** 0916 700 887
-* **GitHub:** [https://github.com/NguyenXuanTung2004](https://github.com/NguyenXuanTung2004)
-* **Facebook:** [https://www.facebook.com/nguyen.xuan.tung.498801](https://www.facebook.com/nguyen.xuan.tung.498801)
-* **LinkedIn:** (Nếu có, bạn có thể thêm link)
-
-Cảm ơn bạn đã ghé thăm! Chúc bạn tìm thấy những thông tin hữu ích trên blog này. 😊
+    <div class="thank-you" style="text-align: center; margin-top: 40px; padding: 30px 20px; background: #f8f9fa; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <h3 style="color: #2c3e50; margin-bottom: 10px;">Cảm ơn bạn đã ghé thăm! 😊</h3>
+        <p style="color: #7f8c8d; margin: 5px 0;">Chúc bạn tìm thấy những thông tin hữu ích trên blog này.</p>
+    </div>
+</div>
+{{< /rawhtml >}}

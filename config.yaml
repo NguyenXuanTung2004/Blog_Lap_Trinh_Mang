@@ -1,0 +1,141 @@
+baseURL: "https://NguyenXuanTung2004.github.io/Blog_Lap_Trinh_Mang/"
+languageCode: "vi-vn"
+title: "Nguyễn Xuân Tùng"
+theme: "stack"
+
+markup:
+    goldmark:
+        renderer:
+            unsafe: true # Cho phép HTML trong markdown
+
+params:
+    customCSS:
+        - css/custom/profile.css # Thêm custom CSS
+
+# Theme parameters (cleaned minimal configuration)
+params:
+    mainSections:
+        - posts
+    sidebar:
+        compact: false
+        emoji: "🎓"
+        subtitle: "Blog chia sẻ kiến thức lập trình"
+
+    categories:
+        image:
+            enabled: true
+            # Đường dẫn đến thư mục chứa ảnh categories
+            path: "img/categories"
+
+    profile:
+        enabled: true
+        avatar:
+            enabled: true
+            local: true
+            src: "img/avatar.jpg"
+
+    widgets:
+        homepage:
+            - type: search
+            - type: archives
+              params:
+                limit: 5
+            - type: categories
+              params:
+                limit: 10
+            - type: tag-cloud
+              params:
+                limit: 20
+
+        page:
+            - type: toc
+
+    footer:
+        since: 2024
+
+    article:
+        math: false
+        toc: true
+        readingTime: true
+        
+        # Enable featured image
+        image:
+            enabled: true
+            height: 450
+            width: 900
+
+    imageCrop: true # Cắt ảnh để phù hợp với kích thước
+    
+    # Cấu hình hiển thị ảnh category
+    sidebar:
+        compact: false
+        emoji: "🎓"
+        subtitle: "Blog chia sẻ kiến thức lập trình"
+        avatar:
+            enabled: true
+            local: true
+
+    search:
+        enable: true
+        type: "fuse"
+        contentLength: 4000
+        placeholder: "Tìm kiếm..."
+        fuse:
+            isCaseSensitive: false
+            includeScore: true
+            shouldSort: true
+            location: 0
+            distance: 100
+            threshold: 0.3
+            minMatchCharLength: 2
+            keys: ["title", "description", "content"]
+
+menu:
+    main:
+        # - identifier: archives
+        #   name: Archives
+        #   url: /archives/
+        #   weight: 10
+        #   params:
+        #       icon: archives
+
+        - identifier: search
+          name: Search
+          url: /search/
+          weight: 20
+          params:
+              icon: search
+
+        - identifier: posts
+          name: Bài viết
+          url: /posts/
+          weight: 30
+          params:
+              icon: archives
+
+        - identifier: profile
+          name: Profile
+          url: /profile/
+          weight: 40
+          params:
+              icon: user
+
+pagination:
+    pagerSize: 5
+
+summaryLength: 10
+
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON
+
+markup:
+    goldmark:
+        renderer:
+            unsafe: true
+    highlight:
+        noClasses: false
+        lineNos: true
+        lineNumbersInTable: true

@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+            <p class="lead">{{ . }}</p>
+        {{ end }}
+    </div>
+    <!-- Để trống nội dung trang chủ -->
+</div>
+{{ end }}

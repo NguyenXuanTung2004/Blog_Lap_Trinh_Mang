@@ -1,0 +1,26 @@
+{
+    "articles": [
+        {{- range $index, $page := (where .Site.RegularPages "Section" "posts") -}}
+            {{- if gt $index 0 -}},{{- end -}}
+            {
+                "title": "{{ .Title }}",
+                "date" : "{{ .Date.Format "2006-01-02" }}",
+                "permalink" : "{{ .Permalink }}",
+                "summary" : {{ .Summary | jsonify }},
+                "content" : {{ .Content | jsonify }},
+                "categories" : [
+                    {{- range $idx, $category := .Params.categories -}}
+                        {{- if gt $idx 0 -}},{{- end -}}
+                        "{{- $category -}}"
+                    {{- end -}}
+                ],
+                "tags" : [
+                    {{- range $idx, $tag := .Params.tags -}}
+                        {{- if gt $idx 0 -}},{{- end -}}
+                        "{{- $tag -}}"
+                    {{- end -}}
+                ]
+            }
+        {{- end -}}
+    ]
+}

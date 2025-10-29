@@ -1,0 +1,26 @@
+{{- $page := .Page }}
+{{- $pages := .Pages }}
+
+{{- with $page }}
+    {{- if ne .Type "page" }}
+        {{/* --- START: Code gốc đã được sửa --- */}}
+        {{/* Thêm style="text-align: center;" trực tiếp vào header */}}
+        <header class="article-header" style="text-align: center;"> 
+            {{/* Xóa thẻ div.article-details thừa */}}
+
+            {{/* Giữ lại khối tiêu đề */}}
+            <div class="article-title-wrapper">
+                <h2 class="article-title">
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </h2>
+            {{- with .Params.subtitle }}
+                <h3 class="article-subtitle">{{ . }}</h3>
+            {{- end }}
+            </div>
+
+            {{/* Giữ lại khối meta (ngày tháng, thời gian đọc) */}}
+            {{- partial "article/components/meta.html" (dict "page" . "pages" $pages) }}
+        </header>
+        {{/* --- END: Code gốc đã được sửa --- */}}
+    {{- end }}
+{{- end }}

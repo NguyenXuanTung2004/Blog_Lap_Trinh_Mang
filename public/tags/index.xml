@@ -5,6 +5,159 @@
         <link>http://localhost:1313/tags/</link>
         <description>Recent content in Tags on Nguyễn Xuân Tùng</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>vi-vn</language><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+        <language>vi-vn</language>
+        <lastBuildDate>Sat, 25 Oct 2025 17:00:00 +0700</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Java</title>
+        <link>http://localhost:1313/tags/java/</link>
+        <pubDate>Sat, 25 Oct 2025 17:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/java/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Networking</title>
+        <link>http://localhost:1313/tags/networking/</link>
+        <pubDate>Sat, 25 Oct 2025 17:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/networking/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>RMI</title>
+        <link>http://localhost:1313/tags/rmi/</link>
+        <pubDate>Sat, 25 Oct 2025 17:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/rmi/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Async-Await</title>
+        <link>http://localhost:1313/tags/async-await/</link>
+        <pubDate>Fri, 24 Oct 2025 11:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/async-await/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Fetch API</title>
+        <link>http://localhost:1313/tags/fetch-api/</link>
+        <pubDate>Fri, 24 Oct 2025 11:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/fetch-api/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>JavaScript</title>
+        <link>http://localhost:1313/tags/javascript/</link>
+        <pubDate>Fri, 24 Oct 2025 11:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/javascript/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Object Stream</title>
+        <link>http://localhost:1313/tags/object-stream/</link>
+        <pubDate>Thu, 23 Oct 2025 16:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/object-stream/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Serialization</title>
+        <link>http://localhost:1313/tags/serialization/</link>
+        <pubDate>Thu, 23 Oct 2025 16:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/serialization/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Socket</title>
+        <link>http://localhost:1313/tags/socket/</link>
+        <pubDate>Wed, 22 Oct 2025 15:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/socket/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>UDP</title>
+        <link>http://localhost:1313/tags/udp/</link>
+        <pubDate>Wed, 22 Oct 2025 15:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/udp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>TCP</title>
+        <link>http://localhost:1313/tags/tcp/</link>
+        <pubDate>Tue, 21 Oct 2025 09:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/tcp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>IP</title>
+        <link>http://localhost:1313/tags/ip/</link>
+        <pubDate>Mon, 20 Oct 2025 14:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/ip/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>URL</title>
+        <link>http://localhost:1313/tags/url/</link>
+        <pubDate>Mon, 20 Oct 2025 14:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/url/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Concurrency</title>
+        <link>http://localhost:1313/tags/concurrency/</link>
+        <pubDate>Sun, 19 Oct 2025 11:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/concurrency/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Multithreading</title>
+        <link>http://localhost:1313/tags/multithreading/</link>
+        <pubDate>Sun, 19 Oct 2025 11:00:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/multithreading/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>I/O</title>
+        <link>http://localhost:1313/tags/i/o/</link>
+        <pubDate>Wed, 25 Oct 2023 17:30:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/i/o/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Stream</title>
+        <link>http://localhost:1313/tags/stream/</link>
+        <pubDate>Wed, 25 Oct 2023 17:30:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/stream/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Giới Thiệu</title>
+        <link>http://localhost:1313/tags/gi%E1%BB%9Bi-thi%E1%BB%87u/</link>
+        <pubDate>Tue, 25 Oct 2022 17:30:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/gi%E1%BB%9Bi-thi%E1%BB%87u/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>JVM</title>
+        <link>http://localhost:1313/tags/jvm/</link>
+        <pubDate>Tue, 25 Oct 2022 17:30:00 +0700</pubDate>
+        
+        <guid>http://localhost:1313/tags/jvm/</guid>
+        <description></description>
+        </item>
+        
     </channel>
 </rss>
