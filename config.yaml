@@ -55,7 +55,6 @@ params:
 
     footer:
         since: 2024
-
     article:
         math: false
         toc: true
