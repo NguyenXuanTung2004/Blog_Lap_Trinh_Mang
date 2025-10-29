@@ -8,12 +8,11 @@ markup:
         renderer:
             unsafe: true # Cho phép HTML trong markdown
 
+# Theme parameters (cleaned minimal configuration)
 params:
     customCSS:
         - css/custom/profile.css # Thêm custom CSS
-
-# Theme parameters (cleaned minimal configuration)
-params:
+        
     mainSections:
         - posts
     sidebar:
