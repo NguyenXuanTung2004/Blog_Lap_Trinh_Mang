@@ -66,13 +66,7 @@ params:
     imageCrop: true # Cắt ảnh để phù hợp với kích thước
     
     # Cấu hình hiển thị ảnh category
-    sidebar:
-        compact: false
-        emoji: "🎓"
-        subtitle: "Blog chia sẻ kiến thức lập trình"
-        avatar:
-            enabled: true
-            local: true
+
 
     search:
         enable: true
