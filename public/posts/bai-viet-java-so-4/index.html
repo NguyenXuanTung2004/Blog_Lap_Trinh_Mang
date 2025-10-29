@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi-vn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Trước khi bắt tay vào xây dựng các &ldquo;đường hầm&rdquo; (Sockets) phức tạp để giao tiếp hai chiều, mọi lập trình viên mạng cần nắm vững cách xác định và tương tác với &ldquo;địa chỉ&rdquo; trên Internet. Giống như bạn không thể gửi thư nếu không biết địa chỉ người nhận, chương trình Java cũng không thể kết nối nếu không biết &ldquo;tọa độ&rdquo; của máy chủ đích.\nTrong Java, có ba lớp cốt lõi, như &ldquo;ba chàng ngự lâm&rdquo;, giúp bạn xử lý các vấn đề về địa chỉ và kết nối cơ bản: InetAddress, URL, và URLConnection.\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Trước khi bắt tay vào xây dựng các &ldquo;đường hầm&rdquo; (Sockets) phức tạp để giao tiếp hai chiều, mọi lập trình viên mạng cần nắm vững cách xác định và tương tác với &ldquo;địa chỉ&rdquo; trên Internet. Giống như bạn không thể gửi thư nếu không biết địa chỉ người nhận, chương trình Java cũng không thể kết nối nếu không biết &ldquo;tọa độ&rdquo; của máy chủ đích.\n">
 <title>Ba Chàng Ngự Lâm Mạng Java (InetAddress, URL, URLConnection)</title>
 
 <link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-4/'>
 
 <link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Ba Chàng Ngự Lâm Mạng Java (InetAddress, URL, URLConnection)">
-<meta property='og:description' content="Trước khi bắt tay vào xây dựng các &ldquo;đường hầm&rdquo; (Sockets) phức tạp để giao tiếp hai chiều, mọi lập trình viên mạng cần nắm vững cách xác định và tương tác với &ldquo;địa chỉ&rdquo; trên Internet. Giống như bạn không thể gửi thư nếu không biết địa chỉ người nhận, chương trình Java cũng không thể kết nối nếu không biết &ldquo;tọa độ&rdquo; của máy chủ đích.\nTrong Java, có ba lớp cốt lõi, như &ldquo;ba chàng ngự lâm&rdquo;, giúp bạn xử lý các vấn đề về địa chỉ và kết nối cơ bản: InetAddress, URL, và URLConnection.\n">
+<meta property='og:description' content="Trước khi bắt tay vào xây dựng các &ldquo;đường hầm&rdquo; (Sockets) phức tạp để giao tiếp hai chiều, mọi lập trình viên mạng cần nắm vững cách xác định và tương tác với &ldquo;địa chỉ&rdquo; trên Internet. Giống như bạn không thể gửi thư nếu không biết địa chỉ người nhận, chương trình Java cũng không thể kết nối nếu không biết &ldquo;tọa độ&rdquo; của máy chủ đích.\n">
 <meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-4/'>
 <meta property='og:site_name' content='Nguyễn Xuân Tùng'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='Networking' /><meta property='article:tag' content='IP' /><meta property='article:tag' content='URL' /><meta property='article:published_time' content='2025-10-20T14:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-20T14:00:00&#43;07:00'/><meta property='og:image' content='http://localhost:1313/posts/bai-viet-java-so-4/featured-image.jpg' />
 <meta name="twitter:title" content="Ba Chàng Ngự Lâm Mạng Java (InetAddress, URL, URLConnection)">
-<meta name="twitter:description" content="Trước khi bắt tay vào xây dựng các &ldquo;đường hầm&rdquo; (Sockets) phức tạp để giao tiếp hai chiều, mọi lập trình viên mạng cần nắm vững cách xác định và tương tác với &ldquo;địa chỉ&rdquo; trên Internet. Giống như bạn không thể gửi thư nếu không biết địa chỉ người nhận, chương trình Java cũng không thể kết nối nếu không biết &ldquo;tọa độ&rdquo; của máy chủ đích.\nTrong Java, có ba lớp cốt lõi, như &ldquo;ba chàng ngự lâm&rdquo;, giúp bạn xử lý các vấn đề về địa chỉ và kết nối cơ bản: InetAddress, URL, và URLConnection.\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Trước khi bắt tay vào xây dựng các &ldquo;đường hầm&rdquo; (Sockets) phức tạp để giao tiếp hai chiều, mọi lập trình viên mạng cần nắm vững cách xác định và tương tác với &ldquo;địa chỉ&rdquo; trên Internet. Giống như bạn không thể gửi thư nếu không biết địa chỉ người nhận, chương trình Java cũng không thể kết nối nếu không biết &ldquo;tọa độ&rdquo; của máy chủ đích.\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='http://localhost:1313/posts/bai-viet-java-so-4/featured-image.jpg' />
     </head>
     <body class="
@@ -100,6 +100,16 @@
             <a href='/posts/' >
                 
                 
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
                 
                 <span>Bài viết</span>
             </a>
@@ -294,7 +304,52 @@
 <li>Kết quả IP được trả về cho chương trình Java của bạn dưới dạng đối tượng <code>InetAddress</code>.</li>
 </ol>
 <h3 id="ví-dụ-chi-tiết-hơn">Ví Dụ Chi Tiết Hơn
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.InetAddress</span><span class="p">;</span><span class="w">
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.InetAddress</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.UnknownHostException</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Arrays</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -335,7 +390,9 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div>
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

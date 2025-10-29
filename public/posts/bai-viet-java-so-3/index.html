@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi-vn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\nChạy đơn tuyến (Single-threaded): Nếu bạn chỉ có một &ldquo;luồng thực thi&rdquo; (thread) duy nhất, nó phải làm mọi thứ tuần tự. Khi bạn bấm tải một trang web lớn, luồng đó bận rộn tải dữ liệu, và toàn bộ giao diện người dùng (các nút bấm, thanh cuộn) sẽ bị &ldquo;đơ&rdquo; (freeze) cho đến khi tải xong. Trải nghiệm cực kỳ tệ! 🥶 Chạy đa tuyến (Multi-threaded): Bạn có thể tạo ra nhiều luồng: Luồng chính (UI Thread): Chỉ lo vẽ giao diện, đảm bảo nút bấm luôn nhạy. Luồng tải dữ liệu 1: Đi tải HTML. Luồng tải dữ liệu 2: Đi tải ảnh. Luồng tải dữ liệu 3: Đi tải CSS/JavaScript. Các luồng tải dữ liệu chạy ngầm, không làm ảnh hưởng đến luồng giao diện. Kết quả: Trình duyệt của bạn mượt mà, phản hồi nhanh nhạy. ✨ Đây chính là sức mạnh của Đa tuyến (Multithreading). Nó cho phép một chương trình thực hiện nhiều tác vụ đồng thời (concurrently) hoặc song song (parallel, nếu máy có nhiều CPU core), bằng cách tạo ra các &ldquo;tiểu trình&rdquo; (Thread) độc lập.\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\n">
 <title>Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song</title>
 
 <link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-3/'>
 
 <link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song">
-<meta property='og:description' content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\nChạy đơn tuyến (Single-threaded): Nếu bạn chỉ có một &ldquo;luồng thực thi&rdquo; (thread) duy nhất, nó phải làm mọi thứ tuần tự. Khi bạn bấm tải một trang web lớn, luồng đó bận rộn tải dữ liệu, và toàn bộ giao diện người dùng (các nút bấm, thanh cuộn) sẽ bị &ldquo;đơ&rdquo; (freeze) cho đến khi tải xong. Trải nghiệm cực kỳ tệ! 🥶 Chạy đa tuyến (Multi-threaded): Bạn có thể tạo ra nhiều luồng: Luồng chính (UI Thread): Chỉ lo vẽ giao diện, đảm bảo nút bấm luôn nhạy. Luồng tải dữ liệu 1: Đi tải HTML. Luồng tải dữ liệu 2: Đi tải ảnh. Luồng tải dữ liệu 3: Đi tải CSS/JavaScript. Các luồng tải dữ liệu chạy ngầm, không làm ảnh hưởng đến luồng giao diện. Kết quả: Trình duyệt của bạn mượt mà, phản hồi nhanh nhạy. ✨ Đây chính là sức mạnh của Đa tuyến (Multithreading). Nó cho phép một chương trình thực hiện nhiều tác vụ đồng thời (concurrently) hoặc song song (parallel, nếu máy có nhiều CPU core), bằng cách tạo ra các &ldquo;tiểu trình&rdquo; (Thread) độc lập.\n">
+<meta property='og:description' content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\n">
 <meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-3/'>
 <meta property='og:site_name' content='Nguyễn Xuân Tùng'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='Multithreading' /><meta property='article:tag' content='Concurrency' /><meta property='article:published_time' content='2025-10-19T11:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-19T11:00:00&#43;07:00'/><meta property='og:image' content='http://localhost:1313/posts/bai-viet-java-so-3/featured-image.jpg' />
 <meta name="twitter:title" content="Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song">
-<meta name="twitter:description" content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\nChạy đơn tuyến (Single-threaded): Nếu bạn chỉ có một &ldquo;luồng thực thi&rdquo; (thread) duy nhất, nó phải làm mọi thứ tuần tự. Khi bạn bấm tải một trang web lớn, luồng đó bận rộn tải dữ liệu, và toàn bộ giao diện người dùng (các nút bấm, thanh cuộn) sẽ bị &ldquo;đơ&rdquo; (freeze) cho đến khi tải xong. Trải nghiệm cực kỳ tệ! 🥶 Chạy đa tuyến (Multi-threaded): Bạn có thể tạo ra nhiều luồng: Luồng chính (UI Thread): Chỉ lo vẽ giao diện, đảm bảo nút bấm luôn nhạy. Luồng tải dữ liệu 1: Đi tải HTML. Luồng tải dữ liệu 2: Đi tải ảnh. Luồng tải dữ liệu 3: Đi tải CSS/JavaScript. Các luồng tải dữ liệu chạy ngầm, không làm ảnh hưởng đến luồng giao diện. Kết quả: Trình duyệt của bạn mượt mà, phản hồi nhanh nhạy. ✨ Đây chính là sức mạnh của Đa tuyến (Multithreading). Nó cho phép một chương trình thực hiện nhiều tác vụ đồng thời (concurrently) hoặc song song (parallel, nếu máy có nhiều CPU core), bằng cách tạo ra các &ldquo;tiểu trình&rdquo; (Thread) độc lập.\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='http://localhost:1313/posts/bai-viet-java-so-3/featured-image.jpg' />
     </head>
     <body class="
@@ -100,6 +100,16 @@
             <a href='/posts/' >
                 
                 
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
                 
                 <span>Bài viết</span>
             </a>
@@ -307,7 +317,27 @@ Các luồng tải dữ liệu chạy ngầm, không làm ảnh hưởng đến 
 </h2><p>Như đã đề cập, có 2 cách chính:</p>
 <h3 id="cách-làm--extends-thread">Cách làm : <code>extends Thread</code>
 </h3><p>Tạo một lớp kế thừa trực tiếp từ <code>java.lang.Thread</code> và override phương thức <code>run()</code>.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">MyThread</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span><span class="w">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">MyThread</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">taskName</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyThread</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">taskName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -323,7 +353,9 @@ Các luồng tải dữ liệu chạy ngầm, không làm ảnh hưởng đến 
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Cách sử dụng:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MyThread</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyThread</span><span class="p">(</span><span class="s">&#34;Task A&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">t1</span><span class="p">.</span><span class="na">start</span><span class="p">();</span><span class="w"> </span><span class="c1">// Quan trọng: Gọi start() để tạo luồng mới</span><span class="w">
-</span></span></span></code></pre></div>
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

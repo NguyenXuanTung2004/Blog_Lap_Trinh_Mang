@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi-vn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\nTrong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\n">
 <title>JavaScript &#39;Gọi Điện&#39; Về Server - Fetch API &amp; async/await</title>
 
 <link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-8/'>
 
 <link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="JavaScript 'Gọi Điện' Về Server - Fetch API & async/await">
-<meta property='og:description' content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\nTrong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.\n">
+<meta property='og:description' content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\n">
 <meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-8/'>
 <meta property='og:site_name' content='Nguyễn Xuân Tùng'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='JavaScript' /><meta property='article:tag' content='Networking' /><meta property='article:tag' content='Fetch API' /><meta property='article:tag' content='async-await' /><meta property='article:published_time' content='2025-10-24T11:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-24T11:00:00&#43;07:00'/><meta property='og:image' content='http://localhost:1313/posts/bai-viet-java-so-8/featured-image.jpg' />
 <meta name="twitter:title" content="JavaScript 'Gọi Điện' Về Server - Fetch API & async/await">
-<meta name="twitter:description" content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\nTrong các ứng dụng web hiện đại (Single Page Applications - SPAs), trải nghiệm người dùng mượt mà là yếu tố then chốt. Khi bạn &ldquo;thích&rdquo; một bài đăng trên Facebook, trang web không tải lại hoàn toàn. Thay vào đó, JavaScript chạy trong trình duyệt của bạn sẽ âm thầm gửi một yêu cầu nhỏ lên server (&ldquo;Người dùng A thích bài đăng X&rdquo;), server xử lý, và JavaScript cập nhật giao diện (nút &ldquo;thích&rdquo; chuyển màu xanh, bộ đếm tăng lên) mà không làm gián đoạn trải nghiệm.\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Chúng ta đã dành nhiều thời gian khám phá cách Java hoạt động ở phía back-end (máy chủ), xử lý logic, kết nối database, và giao tiếp mạng cấp thấp. Giờ là lúc chuyển sang phía front-end - thế giới của trình duyệt web, nơi JavaScript là vua. 👑\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='http://localhost:1313/posts/bai-viet-java-so-8/featured-image.jpg' />
     </head>
     <body class="
@@ -100,6 +100,16 @@
             <a href='/posts/' >
                 
                 
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
                 
                 <span>Bài viết</span>
             </a>
@@ -254,7 +264,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    4 minute read
                 </time>
             </div>
         
@@ -283,7 +293,49 @@
 <h2 id="quản-lý-bất-đồng-bộ-promises-và-then">Quản Lý Bất Đồng Bộ: Promises và <code>.then()</code>
 </h2><p><code>fetch()</code> không trả về dữ liệu ngay lập tức. Nó trả về một <strong>Promise (Lời hứa)</strong>. Promise giống như một giấy hẹn: &ldquo;Tôi hứa sẽ có kết quả (thành công hoặc thất bại) trong tương lai&rdquo;.</p>
 <p>Bạn sử dụng phương thức <code>.then()</code> để &ldquo;đăng ký&rdquo; một hàm callback sẽ được thực thi <strong>khi lời hứa được hoàn thành (resolved)</strong>. Bạn dùng <code>.catch()</code> để xử lý <strong>khi lời hứa thất bại (rejected)</strong>.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// Đây là code JavaScript, chạy trong thẻ &lt;script&gt; của file HTML
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// Đây là code JavaScript, chạy trong thẻ &lt;script&gt; của file HTML
 </span></span></span><span class="line"><span class="cl"><span class="c1">// Hoặc chạy ngay trong Console (F12) của trình duyệt
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">userListElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;user-list&#39;</span><span class="p">);</span> <span class="c1">// Giả sử có &lt;ul id=&#34;user-list&#34;&gt;
@@ -321,7 +373,9 @@
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Code này chạy ngay lập tức, không chờ fetch xong.&#34;</span><span class="p">);</span>
-</span></span></code></pre></div>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

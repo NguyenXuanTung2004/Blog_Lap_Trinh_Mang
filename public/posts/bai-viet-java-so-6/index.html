@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi-vn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\nĐặc điểm chính của UDP:\nKhông Kết Nối (Connectionless): Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (DatagramPacket) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (DatagramSocket) ở cổng đó và chờ thư đến. Không Đáng Tin Cậy (Unreliable): Internet (bưu điện) không đảm bảo bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý. Không Theo Thứ Tự (Out-of-Order Delivery): Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự. Nhẹ và Nhanh (Lightweight &amp; Fast): Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết. Khi nào nên dùng UDP? Khi tốc độ quan trọng hơn độ tin cậy tuyệt đối, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\n">
 <title>Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần &#39;Bắt Tay&#39;</title>
 
 <link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-6/'>
 
 <link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần 'Bắt Tay'">
-<meta property='og:description' content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\nĐặc điểm chính của UDP:\nKhông Kết Nối (Connectionless): Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (DatagramPacket) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (DatagramSocket) ở cổng đó và chờ thư đến. Không Đáng Tin Cậy (Unreliable): Internet (bưu điện) không đảm bảo bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý. Không Theo Thứ Tự (Out-of-Order Delivery): Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự. Nhẹ và Nhanh (Lightweight &amp; Fast): Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết. Khi nào nên dùng UDP? Khi tốc độ quan trọng hơn độ tin cậy tuyệt đối, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.\n">
+<meta property='og:description' content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\n">
 <meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-6/'>
 <meta property='og:site_name' content='Nguyễn Xuân Tùng'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='Networking' /><meta property='article:tag' content='Socket' /><meta property='article:tag' content='UDP' /><meta property='article:published_time' content='2025-10-22T15:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-22T15:00:00&#43;07:00'/><meta property='og:image' content='http://localhost:1313/posts/bai-viet-java-so-6/featured-image.jpg' />
 <meta name="twitter:title" content="Socket UDP - Gửi Dữ Liệu Tốc Hành, Không Cần 'Bắt Tay'">
-<meta name="twitter:description" content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\nĐặc điểm chính của UDP:\nKhông Kết Nối (Connectionless): Không cần &ldquo;bắt tay&rdquo; (handshake). Bên gửi chỉ cần biết địa chỉ IP và cổng của bên nhận, đóng gói dữ liệu vào một &ldquo;bưu thiếp&rdquo; (DatagramPacket) và &ldquo;ném&rdquo; nó vào mạng. Bên nhận chỉ cần &ldquo;mở hòm thư&rdquo; (DatagramSocket) ở cổng đó và chờ thư đến. Không Đáng Tin Cậy (Unreliable): Internet (bưu điện) không đảm bảo bưu thiếp sẽ đến đích. Nó có thể bị thất lạc, bị hỏng trên đường đi, hoặc đến nơi nhưng bị hỏng (checksum error). UDP không tự động gửi lại. Nếu cần độ tin cậy, ứng dụng tầng trên (ví dụ: game của bạn) phải tự xử lý. Không Theo Thứ Tự (Out-of-Order Delivery): Bạn gửi 3 bưu thiếp 1, 2, 3. Người nhận có thể nhận được theo thứ tự 3, 1, 2 hoặc chỉ nhận được 1 và 3. UDP không đảm bảo thứ tự. Nhẹ và Nhanh (Lightweight &amp; Fast): Chính vì bỏ qua các cơ chế đảm bảo của TCP (handshake, sequence number, acknowledgement, retransmission), UDP có phần header rất nhỏ và xử lý rất nhanh. Nó không gây thêm độ trễ (latency) không cần thiết. Khi nào nên dùng UDP? Khi tốc độ quan trọng hơn độ tin cậy tuyệt đối, và ứng dụng có thể chấp nhận hoặc tự xử lý việc mất mát/sai thứ tự gói tin.\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Trong thế giới mạng, TCP giống như một cuộc gọi điện thoại được đảm bảo: bạn phải quay số, chờ người kia nhấc máy, nói chuyện và đảm bảo từng lời được nghe đúng. Ngược lại, UDP (User Datagram Protocol) giống như việc bạn viết thông tin lên một loạt bưu thiếp và thả vào hòm thư 📮.\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='http://localhost:1313/posts/bai-viet-java-so-6/featured-image.jpg' />
     </head>
     <body class="
@@ -100,6 +100,16 @@
             <a href='/posts/' >
                 
                 
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
                 
                 <span>Bài viết</span>
             </a>
@@ -257,7 +267,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    5 minute read
                 </time>
             </div>
         
@@ -303,7 +313,72 @@ Khi <strong>tốc độ</strong> quan trọng hơn <strong>độ tin cậy tuy�
 </ul>
 <h3 id="1-udpechoserverjava---người-nhận-và-phản-hồi-bưu-thiếp-">1. <code>UDPEchoServer.java</code> - Người Nhận và Phản Hồi Bưu Thiếp 📬
 </h3><p>Server tạo <code>DatagramSocket</code> để lắng nghe trên một cổng cố định.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.DatagramSocket</span><span class="p">;</span><span class="w">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.DatagramSocket</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.DatagramPacket</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.InetAddress</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
@@ -364,7 +439,9 @@ Khi <strong>tốc độ</strong> quan trọng hơn <strong>độ tin cậy tuy�
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div>
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

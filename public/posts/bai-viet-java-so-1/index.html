@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi-vn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Chào bạn! Chắc hẳn bạn đã nghe nói về &ldquo;Lập trình Hướng đối tượng&rdquo; (OOP), về các hệ thống ngân hàng tỷ đô, hay về ứng dụng Android. Đứng đằng sau rất nhiều trong số đó, là một gã khổng lồ thầm lặng: Java.\nNhưng tại sao Java lại trở nên quyền lực như vậy?\nHãy tưởng tượng bạn là một kiến trúc sư vĩ đại.\nNếu bạn xây nhà bằng C++, bạn phải là chuyên gia về nền đất. Bạn xây nhà trên &ldquo;nền đất Windows&rdquo;, bạn phải dùng vật liệu của Windows. Khi sang &ldquo;nền đất macOS&rdquo;, bạn phải thiết kế lại móng và tường để chịu được &ldquo;thời tiết&rdquo; của macOS. Cực kỳ tốn công! Với Java, bạn không cần quan tâm đến nền đất. Bạn chỉ cần tập trung thiết kế một &ldquo;bản vẽ thần kỳ&rdquo; (Magic Blueprint) duy nhất. Sau đó, bạn đưa &ldquo;bản vẽ&rdquo; này cho &ldquo;Đội Thi Công&rdquo; tại bất kỳ đâu (Windows, macOS, Linux). &ldquo;Đội Thi Công&rdquo; tại mỗi nơi sẽ tự động đọc bản vẽ của bạn và xây nên ngôi nhà y hệt, một cách hoàn hảo.\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Chào bạn! Chắc hẳn bạn đã nghe nói về &ldquo;Lập trình Hướng đối tượng&rdquo; (OOP), về các hệ thống ngân hàng tỷ đô, hay về ứng dụng Android. Đứng đằng sau rất nhiều trong số đó, là một gã khổng lồ thầm lặng: Java.\n">
 <title>Gã Khổng Lồ &#39;Write Once, Run Anywhere&#39;</title>
 
 <link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-1/'>
 
 <link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Gã Khổng Lồ 'Write Once, Run Anywhere'">
-<meta property='og:description' content="Chào bạn! Chắc hẳn bạn đã nghe nói về &ldquo;Lập trình Hướng đối tượng&rdquo; (OOP), về các hệ thống ngân hàng tỷ đô, hay về ứng dụng Android. Đứng đằng sau rất nhiều trong số đó, là một gã khổng lồ thầm lặng: Java.\nNhưng tại sao Java lại trở nên quyền lực như vậy?\nHãy tưởng tượng bạn là một kiến trúc sư vĩ đại.\nNếu bạn xây nhà bằng C++, bạn phải là chuyên gia về nền đất. Bạn xây nhà trên &ldquo;nền đất Windows&rdquo;, bạn phải dùng vật liệu của Windows. Khi sang &ldquo;nền đất macOS&rdquo;, bạn phải thiết kế lại móng và tường để chịu được &ldquo;thời tiết&rdquo; của macOS. Cực kỳ tốn công! Với Java, bạn không cần quan tâm đến nền đất. Bạn chỉ cần tập trung thiết kế một &ldquo;bản vẽ thần kỳ&rdquo; (Magic Blueprint) duy nhất. Sau đó, bạn đưa &ldquo;bản vẽ&rdquo; này cho &ldquo;Đội Thi Công&rdquo; tại bất kỳ đâu (Windows, macOS, Linux). &ldquo;Đội Thi Công&rdquo; tại mỗi nơi sẽ tự động đọc bản vẽ của bạn và xây nên ngôi nhà y hệt, một cách hoàn hảo.\n">
+<meta property='og:description' content="Chào bạn! Chắc hẳn bạn đã nghe nói về &ldquo;Lập trình Hướng đối tượng&rdquo; (OOP), về các hệ thống ngân hàng tỷ đô, hay về ứng dụng Android. Đứng đằng sau rất nhiều trong số đó, là một gã khổng lồ thầm lặng: Java.\n">
 <meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-1/'>
 <meta property='og:site_name' content='Nguyễn Xuân Tùng'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='Giới thiệu' /><meta property='article:tag' content='JVM' /><meta property='article:published_time' content='2022-10-25T17:30:00&#43;07:00'/><meta property='article:modified_time' content='2022-10-25T17:30:00&#43;07:00'/><meta property='og:image' content='http://localhost:1313/posts/bai-viet-java-so-1/featured-image.jpg' />
 <meta name="twitter:title" content="Gã Khổng Lồ 'Write Once, Run Anywhere'">
-<meta name="twitter:description" content="Chào bạn! Chắc hẳn bạn đã nghe nói về &ldquo;Lập trình Hướng đối tượng&rdquo; (OOP), về các hệ thống ngân hàng tỷ đô, hay về ứng dụng Android. Đứng đằng sau rất nhiều trong số đó, là một gã khổng lồ thầm lặng: Java.\nNhưng tại sao Java lại trở nên quyền lực như vậy?\nHãy tưởng tượng bạn là một kiến trúc sư vĩ đại.\nNếu bạn xây nhà bằng C++, bạn phải là chuyên gia về nền đất. Bạn xây nhà trên &ldquo;nền đất Windows&rdquo;, bạn phải dùng vật liệu của Windows. Khi sang &ldquo;nền đất macOS&rdquo;, bạn phải thiết kế lại móng và tường để chịu được &ldquo;thời tiết&rdquo; của macOS. Cực kỳ tốn công! Với Java, bạn không cần quan tâm đến nền đất. Bạn chỉ cần tập trung thiết kế một &ldquo;bản vẽ thần kỳ&rdquo; (Magic Blueprint) duy nhất. Sau đó, bạn đưa &ldquo;bản vẽ&rdquo; này cho &ldquo;Đội Thi Công&rdquo; tại bất kỳ đâu (Windows, macOS, Linux). &ldquo;Đội Thi Công&rdquo; tại mỗi nơi sẽ tự động đọc bản vẽ của bạn và xây nên ngôi nhà y hệt, một cách hoàn hảo.\n"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Chào bạn! Chắc hẳn bạn đã nghe nói về &ldquo;Lập trình Hướng đối tượng&rdquo; (OOP), về các hệ thống ngân hàng tỷ đô, hay về ứng dụng Android. Đứng đằng sau rất nhiều trong số đó, là một gã khổng lồ thầm lặng: Java.\n"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='http://localhost:1313/posts/bai-viet-java-so-1/featured-image.jpg' />
     </head>
     <body class="
@@ -100,6 +100,16 @@
             <a href='/posts/' >
                 
                 
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
                 
                 <span>Bài viết</span>
             </a>
@@ -348,7 +358,41 @@
 <h2 id="code-example-không-chỉ-là-hello-world">Code Example: Không Chỉ Là &ldquo;Hello, World!&rdquo;
 </h2><p>Hãy làm một ví dụ phức tạp hơn, thể hiện sức mạnh của &ldquo;Hướng đối tượng&rdquo;. Chúng ta sẽ tạo một &ldquo;Khuôn mẫu&rdquo; <code>Student</code> và một chương trình <code>School</code> để tạo ra các sinh viên.</p>
 <h4 id="file-1-studentjava-lớp---khuôn-mẫu">File 1: <code>Student.java</code> (Lớp - Khuôn mẫu)
-</h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Đây là &#34;bản thiết kế&#34; hay &#34;khuôn mẫu&#34; cho một sinh viên</span><span class="w">
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Đây là &#34;bản thiết kế&#34; hay &#34;khuôn mẫu&#34; cho một sinh viên</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Nó không phải là một chương trình chạy được</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Student</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -378,7 +422,9 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;---------------------------&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div>
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
