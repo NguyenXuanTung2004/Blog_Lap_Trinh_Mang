@@ -1,141 +1,159 @@
 baseURL: "https://NguyenXuanTung2004.github.io/Blog_Lap_Trinh_Mang/"
-languageCode: "vi-vn"
+languageCode: "vi-vn" # Hoặc "en-us"
 title: "Nguyễn Xuân Tùng"
 theme: "stack"
+mainSections: ["posts"] # Giữ lại, quan trọng cho Archives
 
+# --- Cấu hình Markup (Gộp lại) ---
 markup:
-    goldmark:
-        renderer:
-            unsafe: true # Cho phép HTML trong markdown
+  goldmark:
+    renderer:
+      unsafe: true # Cho phép HTML trong markdown
+  highlight:
+    noClasses: false
+    # lineNos: true # Tùy chọn bật/tắt
+    # lineNumbersInTable: true # Tùy chọn bật/tắt
 
+# --- Cấu hình Parameters (Gộp tất cả vào đây) ---
 params:
-    customCSS:
-        - css/custom/profile.css # Thêm custom CSS
+  description: "Đây là nơi Tùng chia sẻ về lập trình Java và JavaScript." # Lấy từ file cũ
 
-# Theme parameters (cleaned minimal configuration)
-params:
-    mainSections:
-        - posts
-    sidebar:
-        compact: false
-        emoji: "🎓"
-        subtitle: "Blog chia sẻ kiến thức lập trình"
+  # customCSS: # KHÔNG dùng nếu dùng scss
+  #   - css/custom/profile.css 
 
-    categories:
-        image:
-            enabled: true
-            # Đường dẫn đến thư mục chứa ảnh categories
-            path: "img/categories"
+  # --- Cấu hình Trang chủ (Lấy từ file cũ - Mặc định là trống) ---
+  # homepage: # Không cần cấu hình này nếu muốn trang chủ trống
 
-    profile:
-        enabled: true
-        avatar:
-            enabled: true
-            local: true
-            src: "img/avatar.jpg"
+  # --- Cấu hình Sidebar (Gộp lại từ file cũ) ---
+  sidebar:
+    compact: false
+    emoji: "🎓"
+    subtitle: "Blog chia sẻ kiến thức lập trình" 
+    avatar:
+      enabled: true
+      local: true 
+      src: "img/avatar.png" # Đảm bảo đúng đường dẫn tới assets/img/avatar.png
 
-    widgets:
-        homepage:
-            - type: search
-            - type: archives
-              params:
-                limit: 5
-            - type: categories
-              params:
-                limit: 10
-            - type: tag-cloud
-              params:
-                limit: 20
+  # --- CẤU HÌNH MẠNG XÃ HỘI (Thêm vào) ---
+  social:
+    - identifier: github
+      name: GitHub
+      url: https://github.com/NguyenXuanTung2004
+      params:
+        icon:
+          provider: fa-brands
+          name: github
+    - identifier: facebook
+      name: Facebook
+      url: https://www.facebook.com/nguyen.xuan.tung.498801
+      params:
+        icon:
+          provider: fa-brands
+          name: facebook
+    - identifier: email
+      name: Email
+      url: mailto:tgkg12a6@gmail.com
+      params:
+        icon:
+          provider: fa-solid
+          name: envelope
+          
+  # --- Cấu hình Widget (Lấy từ file cũ) ---
+  widgets:
+    homepage: # Widgets cho trang chủ (trống) VÀ /posts/ VÀ CÁC TRANG LIST KHÁC
+      - type: search
+      - type: archives # Giữ lại Archives theo file cũ
+        params:
+          limit: 5
+      - type: categories
+        params:
+          limit: 10
+      - type: tag-cloud # Dùng tag-cloud theo file cũ
+        params:
+          limit: 20
+    # Không cần listpage riêng nếu homepage áp dụng cho tất cả list
+    page: # Widgets cho trang bài viết/profile
+      - type: toc
 
-        page:
-            - type: toc
+  # --- Cấu hình Footer (Lấy từ file cũ) ---
+  footer:
+    since: 2024 # Giữ năm 2024 theo file cũ
 
-    footer:
-        since: 2024
+  # --- Cấu hình Bài viết (Lấy từ file cũ) ---
+  article:
+    math: false
+    toc: true
+    readingTime: true
+    # image: # Cấu hình ảnh đại diện bài viết (lấy từ file cũ)
+    #   enabled: true
+    #   height: 450
+    #   width: 900
+    # imageCrop: true
 
-    article:
-        math: false
-        toc: true
-        readingTime: true
-        
-        # Enable featured image
-        image:
-            enabled: true
-            height: 450
-            width: 900
+  # --- Cấu hình Tìm kiếm (Lấy từ file cũ - Quan trọng!) ---
+  search:
+    enable: true
+    type: "fuse"
+    # contentLength: 4000 # Có thể bỏ qua
+    # placeholder: "Tìm kiếm..." # Theme tự dịch
+    fuse:
+      isCaseSensitive: false
+      # includeScore: true # Có thể bỏ qua
+      shouldSort: true
+      location: 0
+      distance: 1000 # Tăng distance để dễ tìm hơn
+      threshold: 0.6 # Tăng threshold để dễ tìm hơn (như đã sửa)
+      minMatchCharLength: 2
+      keys: ["title", "permalink", "summary", "content"] # Đảm bảo đúng
 
-    imageCrop: true # Cắt ảnh để phù hợp với kích thước
-    
-    # Cấu hình hiển thị ảnh category
-    sidebar:
-        compact: false
-        emoji: "🎓"
-        subtitle: "Blog chia sẻ kiến thức lập trình"
-        avatar:
-            enabled: true
-            local: true
-
-    search:
-        enable: true
-        type: "fuse"
-        contentLength: 4000
-        placeholder: "Tìm kiếm..."
-        fuse:
-            isCaseSensitive: false
-            includeScore: true
-            shouldSort: true
-            location: 0
-            distance: 100
-            threshold: 0.3
-            minMatchCharLength: 2
-            keys: ["title", "description", "content"]
-
+# --- Cấu hình Menu Sidebar (Lấy từ file cũ) ---
 menu:
-    main:
-        # - identifier: archives
-        #   name: Archives
-        #   url: /archives/
-        #   weight: 10
-        #   params:
-        #       icon: archives
+  main:
+    # Đã comment out Archives theo file cũ
+    # - identifier: archives
+    #   name: Archives 
+    #   url: /archives/
+    #   weight: 10 
+    #   params:
+    #     icon: archives
+    - identifier: search
+      name: Search 
+      url: /search/
+      weight: 20 
+      params:
+        icon: search
+    - identifier: posts
+      name: Bài viết
+      url: /posts/
+      weight: 30 
+      # params: # Xóa icon lỗi archives/list
+      #   icon: archives
+    - identifier: profile
+      name: Profile
+      url: /profile/
+      weight: 40 
+      params:
+        icon: user
 
-        - identifier: search
-          name: Search
-          url: /search/
-          weight: 20
-          params:
-              icon: search
-
-        - identifier: posts
-          name: Bài viết
-          url: /posts/
-          weight: 30
-          params:
-              icon: archives
-
-        - identifier: profile
-          name: Profile
-          url: /profile/
-          weight: 40
-          params:
-              icon: user
-
+# --- Cấu hình Phân trang (Lấy từ file cũ) ---
 pagination:
-    pagerSize: 5
+  pagerSize: 5
 
-summaryLength: 10
+# --- Cấu hình Tóm tắt bài viết (Lấy từ file cũ) ---
+summaryLength: 70 # Sửa lại thành 70 cho chuẩn Hugo
 
+# --- Cấu hình Đầu ra (Quan trọng cho JSON Search) ---
 outputs:
-    home:
-        - HTML
-        - RSS
-        - JSON
+  home: ["HTML", "RSS", "JSON"] # Cần JSON cho tìm kiếm
+  page: ["HTML", "SearchIndex"] # Yêu cầu trang Search tạo SearchIndex
+  section: ["HTML", "RSS"] 
+  taxonomy: ["HTML", "RSS"] 
+  term: ["HTML", "RSS"] 
 
-markup:
-    goldmark:
-        renderer:
-            unsafe: true
-    highlight:
-        noClasses: false
-        lineNos: true
-        lineNumbersInTable: true
+# --- Bổ sung định dạng Output SearchIndex ---
+outputFormats:
+  SearchIndex:
+    mediaType: "application/json"
+    baseName: "index" 
+    isPlainText: true
+    notAlternative: true
