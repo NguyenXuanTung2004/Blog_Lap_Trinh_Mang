@@ -7,6 +7,10 @@ markup:
     goldmark:
         renderer:
             unsafe: true # Cho phép HTML trong markdown
+    highlight:
+        noClasses: false
+        lineNos: true
+        lineNumbersInTable: true
 
 # Theme parameters (cleaned minimal configuration)
 params:
@@ -124,11 +128,3 @@ outputs:
         - RSS
         - JSON
 
-markup:
-    goldmark:
-        renderer:
-            unsafe: true
-    highlight:
-        noClasses: false
-        lineNos: true
-        lineNumbersInTable: true
