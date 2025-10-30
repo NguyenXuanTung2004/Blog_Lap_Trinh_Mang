@@ -23,19 +23,16 @@ params:
         compact: false
         emoji: "🎓"
         subtitle: "Blog chia sẻ kiến thức lập trình"
-
-    categories:
+        avatar:
+            enabled: true
+            local: true
+            src: "img/avatar.png"
         image:
             enabled: true
             # Đường dẫn đến thư mục chứa ảnh categories
             path: "img/categories"
 
-    profile:
-        enabled: true
-        avatar:
-            enabled: true
-            local: true
-            src: "img/avatar.png"
+
 
     widgets:
         homepage:

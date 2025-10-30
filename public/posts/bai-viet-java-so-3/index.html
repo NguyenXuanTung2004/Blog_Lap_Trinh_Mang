@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="vi-vn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\n">
+<title>Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song</title>
+
+<link rel='canonical' href='http://localhost:1313/posts/bai-viet-java-so-3/'>
+
+<link rel="stylesheet" href="/scss/style.min.b1a5b48e9268da293f0e82d09fd1299e5ecbd5ea47ba1f408b3687d520ce0c2b.css"><meta property='og:title' content="Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song">
+<meta property='og:description' content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\n">
+<meta property='og:url' content='http://localhost:1313/posts/bai-viet-java-so-3/'>
+<meta property='og:site_name' content='Nguyễn Xuân Tùng'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='Multithreading' /><meta property='article:tag' content='Concurrency' /><meta property='article:published_time' content='2025-10-19T11:00:00&#43;07:00'/><meta property='article:modified_time' content='2025-10-19T11:00:00&#43;07:00'/><meta property='og:image' content='http://localhost:1313/posts/bai-viet-java-so-3/featured-image.jpg' />
+<meta name="twitter:title" content="Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song">
+<meta name="twitter:description" content="Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='http://localhost:1313/posts/bai-viet-java-so-3/featured-image.jpg' />
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_ca785c3f2ef7617f.png" width="300"
+                            height="411" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🎓</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nguyễn Xuân Tùng</a></h1>
+            <h2 class="site-description">Blog chia sẻ kiến thức lập trình</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/posts/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Bài viết</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/profile/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Profile</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#lợi-ích-và-thách-thức">Lợi Ích và Thách Thức</a></li>
+    <li><a href="#tạo-thread-trong-java-kế-thừa-vs-hợp-đồng">Tạo Thread trong Java: Kế Thừa vs. Hợp Đồng</a>
+      <ul>
+        <li><a href="#cách-làm--extends-thread">Cách làm : <code>extends Thread</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/posts/bai-viet-java-so-3/">
+                <img src="/posts/bai-viet-java-so-3/featured-image_hu_e8ca7c0ca0e96e80.jpg"
+                        srcset="/posts/bai-viet-java-so-3/featured-image_hu_e8ca7c0ca0e96e80.jpg 800w, /posts/bai-viet-java-so-3/featured-image_hu_99775a44b70356f8.jpg 1600w"
+                        width="800" 
+                        height="538" 
+                        loading="lazy"
+                        alt="Featured image of post Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java/" >
+                Java
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/bai-viet-java-so-3/">Đa Tuyến (Multithreading) - Biến Hóa Phân Thân, Xử Lý Song Song</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 19, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Hãy tưởng tượng bạn đang xây dựng một ứng dụng Java phức tạp, ví dụ một trình duyệt web.</p>
+<ul>
+<li><strong>Chạy đơn tuyến (Single-threaded):</strong> Nếu bạn chỉ có một &ldquo;luồng thực thi&rdquo; (thread) duy nhất, nó phải làm mọi thứ tuần tự. Khi bạn bấm tải một trang web lớn, luồng đó bận rộn tải dữ liệu, và toàn bộ giao diện người dùng (các nút bấm, thanh cuộn) sẽ bị &ldquo;đơ&rdquo; (freeze) cho đến khi tải xong. Trải nghiệm cực kỳ tệ! 🥶</li>
+<li><strong>Chạy đa tuyến (Multi-threaded):</strong> Bạn có thể tạo ra nhiều luồng:
+<ul>
+<li>Luồng chính (UI Thread): Chỉ lo vẽ giao diện, đảm bảo nút bấm luôn nhạy.</li>
+<li>Luồng tải dữ liệu 1: Đi tải HTML.</li>
+<li>Luồng tải dữ liệu 2: Đi tải ảnh.</li>
+<li>Luồng tải dữ liệu 3: Đi tải CSS/JavaScript.
+Các luồng tải dữ liệu chạy ngầm, không làm ảnh hưởng đến luồng giao diện. Kết quả: Trình duyệt của bạn mượt mà, phản hồi nhanh nhạy. ✨</li>
+</ul>
+</li>
+</ul>
+<p>Đây chính là sức mạnh của <strong>Đa tuyến (Multithreading)</strong>. Nó cho phép một chương trình thực hiện nhiều tác vụ <strong>đồng thời</strong> (concurrently) hoặc <strong>song song</strong> (parallel, nếu máy có nhiều CPU core), bằng cách tạo ra các &ldquo;tiểu trình&rdquo; (Thread) độc lập.</p>
+<p>Trong Lập trình Mạng, một <strong>Server</strong> bắt buộc phải là đa tuyến. Nó không thể &ldquo;đơ&rdquo; toàn bộ hệ thống chỉ vì đang phục vụ một Client. Nó phải sẵn sàng tiếp nhận và xử lý hàng trăm, hàng ngàn Client cùng lúc.</p>
+<hr>
+<h2 id="lợi-ích-và-thách-thức">Lợi Ích và Thách Thức
+</h2><p><strong>Lợi ích:</strong></p>
+<ul>
+<li><strong>Tăng khả năng phản hồi (Responsiveness):</strong> Giao diện người dùng không bị &ldquo;đơ&rdquo; khi có tác vụ nặng chạy ngầm.</li>
+<li><strong>Tận dụng CPU đa nhân (Performance):</strong> Nếu máy có nhiều CPU core, các thread có thể chạy song song thực sự, tăng tốc độ xử lý.</li>
+<li><strong>Chia sẻ tài nguyên hiệu quả:</strong> Các thread trong cùng một process có thể chia sẻ bộ nhớ (dữ liệu) dễ dàng hơn so với các process riêng biệt.</li>
+</ul>
+<p><strong>Thách thức:</strong></p>
+<ul>
+<li><strong>Phức tạp (Complexity):</strong> Quản lý nhiều luồng khó hơn nhiều so với một luồng.</li>
+<li><strong>Vấn đề Đồng bộ hóa (Synchronization):</strong> Khi nhiều luồng cùng truy cập và thay đổi một dữ liệu chung, có thể xảy ra lỗi &ldquo;dẫm chân lên nhau&rdquo; (race condition), dẫn đến dữ liệu sai lệch. Cần các cơ chế khóa (lock) để bảo vệ.</li>
+<li><strong>Deadlock:</strong> Hai hay nhiều luồng chờ đợi lẫn nhau mãi mãi, không luồng nào chạy tiếp được.</li>
+<li><strong>Tốn tài nguyên:</strong> Mỗi thread cũng tiêu tốn một ít bộ nhớ và CPU để quản lý.</li>
+</ul>
+<hr>
+<h2 id="tạo-thread-trong-java-kế-thừa-vs-hợp-đồng">Tạo Thread trong Java: Kế Thừa vs. Hợp Đồng
+</h2><p>Như đã đề cập, có 2 cách chính:</p>
+<h3 id="cách-làm--extends-thread">Cách làm : <code>extends Thread</code>
+</h3><p>Tạo một lớp kế thừa trực tiếp từ <code>java.lang.Thread</code> và override phương thức <code>run()</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">MyThread</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">taskName</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyThread</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">taskName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Thread &#39;&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">taskName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;&#39; đang chạy...&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Làm việc gì đó...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="n">1000</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Thread &#39;&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">taskName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;&#39; kết thúc.&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Cách sử dụng:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">MyThread</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyThread</span><span class="p">(</span><span class="s">&#34;Task A&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">t1</span><span class="p">.</span><span class="na">start</span><span class="p">();</span><span class="w"> </span><span class="c1">// Quan trọng: Gọi start() để tạo luồng mới</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/java/">Java</a>
+        
+            <a href="/tags/multithreading/">Multithreading</a>
+        
+            <a href="/tags/concurrency/">Concurrency</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/posts/bai-viet-java-so-2/">
+        
+        
+            <div class="article-image">
+                <img src="/posts/bai-viet-java-so-2/featured-image.f632b4c2c36b20931bc97049ff437165_hu_7e99a16e26866c7a.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Luồng (Stream) trong Java - Đường Ống Dẫn Dữ Liệu Tinh Tế"
+                        
+                        data-hash="md5-9jK0wsNrIJMbyXBJ/0NxZQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Luồng (Stream) trong Java - Đường Ống Dẫn Dữ Liệu Tinh Tế</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/posts/bai-viet-java-so-1/">
+        
+        
+            <div class="article-image">
+                <img src="/posts/bai-viet-java-so-1/featured-image.b86c29fc254f92f48b41f28691e6b00f_hu_bfa89dfd59b2d762.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Gã Khổng Lồ &#39;Write Once, Run Anywhere&#39;"
+                        
+                        data-hash="md5-uGwp/CVPkvSLQfKGkeawDw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Gã Khổng Lồ &#39;Write Once, Run Anywhere&#39;</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2025 Nguyễn Xuân Tùng
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.31.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.ecd139d3b4f1dafb5cd9c1037f8896e526e5289c3f29b91a454ca1de9d8f178a.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
